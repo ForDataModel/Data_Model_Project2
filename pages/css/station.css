@@ -1,5 +1,5 @@
 .box{
-  height: 480px;
+  height: 400px;
   border: 1px solid black;
   border-radius: 10px 10px;
   margin-left: 4%;
@@ -19,4 +19,14 @@
 
 hr{
   color: black;
+}
+
+.add{
+  text-align: center;
+  padding-top: 50%;
+  overflow: hidden;
+}
+
+.add img:hover{
+  cursor: pointer;
 }
