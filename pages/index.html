@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>Employee</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -19,6 +19,7 @@
 
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet" type="text/css">
 
     <!-- Morris Charts CSS -->
     <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
@@ -111,8 +112,42 @@
                         <input class="form-control">
                     </div>
                     <div class="col-lg-1">
-                        <button class="btn btn-default">新增</button>
+                        <button onclick="showDialog()" class="btn btn-default">新增</button>
                     </div>
+                    <div id="dialog">
+
+        </div>
+        <div id="msg" class="col-xs-4 col-xs-offset-2">
+            <div>
+            <i class="fa fa-times col-xs-2 col-xs-offset-10" aria-hidden="true"onclick="closeDialog();"></i>
+            </div>
+            <div class="col-xs-12">
+            <p class="col-xs-5">姓名</p>            
+            <input class="col-xs-7" type="text"></div>
+            <div class="col-xs-12">
+            <p class="col-xs-5">性別</p>            
+            <input type="radio" class="col-xs-2" name="gender" type="text">男</br>
+            <input type="radio" class="col-xs-2" name="gender" type="text">女
+            </div>
+            <div class="col-xs-12">
+            <p class="col-xs-5">身分證字號</p>            
+            <input class="col-xs-7" type="text">
+            </div>
+            <div class="col-xs-12">
+            <p class="col-xs-5">生日</p>            
+            <input class="col-xs-7" type="text" placeholder="yyyy-mm-dd">
+            </div>
+            <div class="col-xs-12">
+            <p class="col-xs-5">薪水</p>            
+            <input class="col-xs-7" type="text">
+            </div>
+            <div class="col-xs-12">
+            <p class="col-xs-5">類別</p>            
+            <input type="radio" class="col-xs-2" name="gender" type="text">正職</br>
+            <input type="radio" class="col-xs-2" name="gender" type="text">打工
+            </div>
+            <div id="newconfirm"><input type="button" value="確認新增" onclick="closeDialog();" ></div>         
+        </div>
                 </div>
             </div>
             <div class="row">

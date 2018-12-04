@@ -1,0 +1,33 @@
+#dialog{
+	position: fixed;
+	top:0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	margin:0px;
+	background-color: #000000;
+	z-index: 1;
+	text-align: center;
+}
+#msg{  
+	position:absolute;/*
+	top:100px;*/
+	background-color:rgb(183,233,249);
+	width:400px;
+	z-index:3;
+	border:30px solid transparent;
+}
+/*#msg>p,input{
+	margin-top: 30px;
+}*/
+#msg>i{
+	position: absolute;
+	cursor: pointer;
+}
+.fa{
+	padding-bottom: 10px;
+}
+#newconfirm{
+	text-align: center;
+	margin-top: 230px;
+}
