@@ -46,3 +46,62 @@ $(".add img").on("click",function(){
 $(".item").on("click",function(){
 	window.location.href="storage.html";
 })
+
+$(".delete").on("click",function(){
+  $(this).parent().parent().remove();
+})
+
+var td1 = "";
+var td2 = "";
+$(".edit").on("click",function(){
+  td1 = $(this).parent().prev().prev().text();
+  $(this).parent().prev().prev().text("");
+  $(this).parent().prev().prev().html("<input value='"+td1+"'>");
+  td2 = $(this).parent().prev().text();
+  $(this).parent().prev().text("");
+  $(this).parent().prev().html("<input value='"+td2+"'>");
+  $(this).parent().html("<button class='conform'>確認</button>");
+  $(".conform").on("click",function(){
+    location.reload();
+  })
+})
+
+$(document).ready(function(){
+$("#dialog").css("display","none");
+$("#msg").css("display","none");
+$("#dialog").css("opacity","0.5");
+
+});
+
+function closeDialog(){
+$("#dialog").css("display","none");
+$("#msg").css("display","none");
+}
+function showDialog(){
+   /*秀出對話框*/
+$("#dialog").css("display","");
+$("#msg").css("display","");
+        
+var w=$("#msg").width();
+var h=$("#msg").height();
+var _top=_sh/2-h/2+$(document).scrollTop();//更好的方法 使用jQuery解決
+var _left=_sw/2-w/2;
+   /*設定視窗出現位置*/  
+$("#msg").css("top",_top+'px');
+$("#msg").css("left",_left+'px');
+}
+
+$("#uploadImage").change(function(){
+      readImage( this );
+    });
+ 
+    function readImage(input) {
+      if ( input.files && input.files[0] ) {
+        var FR= new FileReader();
+        FR.onload = function(e) {
+          //e.target.result = base64 format picture
+          $('#img').attr( "src", e.target.result );
+        };       
+        FR.readAsDataURL( input.files[0] );
+      }
+    }
