@@ -53,6 +53,8 @@ hr{
   width:400px;
   z-index:3;
   border:30px solid transparent;
+  border-radius: 20px;
+  font-family:Microsoft JhengHei;
 }
 /*#msg>p,input{
   margin-top: 30px;
@@ -67,8 +69,28 @@ hr{
 #msg>div>#img{
   width: 100%;
 }
+#newconfirm>input{
+  color: #444444;
+  background: #F3F3F3;
+  border: 1px #DADADA solid;
+  padding: 5px 10px;
+  border-radius: 2px;
+  font-weight: bold;
+  font-size: 9pt;
+  outline: none;
+}
+#newconfirm>input:hover{
+  border: 1px #C6C6C6 solid;
+  box-shadow: 1px 1px 1px #EAEAEA;
+  color: #333333;
+  background: #F7F7F7;
+}
+#newconfirm>input:active {
+    box-shadow: inset 1px 1px 1px #DFDFDF;   
+}
 .fa{
   padding-bottom: 10px;
+  cursor: pointer;
 }
 #newconfirm{
   text-align: center;
