@@ -31,7 +31,7 @@ $(function(){
 var items = 6;
 var addRow = "<div class='col-lg-12'></div>";
 var addMark = "<div class='col-lg-3 box'><div class='add'><img src='img/add.png' width='50%' height='100%'></div></div>";
-var addItem = "<div class='col-lg-3 box'><div class='img'><a href='#'><img src='img/1.jpg' width='100%'></a></div><hr><div class='text'><p>泰山加油站</p><p>新北市泰山區泰林路二段424號</p><p>02-2909-7921</p></div></div>";
+var addItem = "<div class='col-lg-3 box item'><div class='img'><a href='#'><img src='img/1.jpg' width='100%'></a></div><hr><div class='text'><p>泰山加油站</p><p>新北市泰山區泰林路二段424號</p><p>02-2909-7921</p></div></div>";
 $(".add img").on("click",function(){
 	items += 1;
 	if(items%3 == 1){
@@ -41,4 +41,8 @@ $(".add img").on("click",function(){
 		$(this).parent().parent().remove();
 	}
 	addHover();
+})
+
+$(".item").on("click",function(){
+	window.location.href="storage.html";
 })
