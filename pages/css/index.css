@@ -1,3 +1,7 @@
+body{
+  font-family:Microsoft JhengHei;
+}
+
 .add{
 	margin-bottom: 10px;
 }
@@ -20,13 +24,14 @@
 #msg1{  
   position:absolute;/*
   top:100px;*/
-  background-color:rgb(183,233,249);
+  background-color:#F7F8FA;
   width:400px;
   z-index:3;
   border:30px solid transparent;
   border-radius: 20px;
   font-family:Microsoft JhengHei;
   margin-top: -100px;
+  box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.8);
 }
 #msg1>div>p,input{
   margin-top: 10px;
@@ -47,8 +52,7 @@
   border: 1px #DADADA solid;
   padding: 5px 10px;
   border-radius: 2px;
-  font-weight: bold;
-  font-size: 9pt;
+  font-size: 12pt;
   outline: none;
 }
 #newconfirm1>input:hover{
@@ -83,13 +87,14 @@
 #msg2{  
   position:absolute;/*
   top:100px;*/
-  background-color:rgb(183,233,249);
+  background-color:#F7F8FA;
   width:400px;
   z-index:3;
   border:30px solid transparent;
   border-radius: 20px;
   font-family:Microsoft JhengHei;
   margin-top: -300px;
+  box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.8);
 }
 #msg2>div>p,input{
   margin-top: 10px;
@@ -110,8 +115,7 @@
   border: 1px #DADADA solid;
   padding: 5px 10px;
   border-radius: 2px;
-  font-weight: bold;
-  font-size: 9pt;
+  font-size: 12pt;
   outline: none;
 }
 #newconfirm2>input:hover{
@@ -130,4 +134,8 @@
 #newconfirm2{
   text-align: center;
   margin-top: 160px;
+}
+
+.poptext p{
+	font-size: 18px;
 }
