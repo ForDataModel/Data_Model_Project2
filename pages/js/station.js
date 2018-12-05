@@ -44,7 +44,7 @@ $(".add img").on("click",function(){
 })
 
 $(".item").on("click",function(){
-	window.location.href="storage.html";
+	window.location.href="storage.php";
 })
 
 $(".delete").on("click",function(){
