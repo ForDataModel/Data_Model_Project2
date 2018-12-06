@@ -22,7 +22,7 @@ body{
   z-index: 1;
   text-align: center;
 }
-#msg1{  
+#msg1{
   position:absolute;/*
   top:100px;*/
   background-color:#F7F8FA;
@@ -33,7 +33,6 @@ body{
   font-family:Microsoft JhengHei;
   margin-top: -100px;
   box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.8);
-  margin-top: -200px;
 }
 #msg1>div>p,input{
   margin-top: 10px;
@@ -64,7 +63,7 @@ body{
   background: #F7F7F7;
 }
 #newconfirm1>input:active {
-    box-shadow: inset 1px 1px 1px #DFDFDF;   
+    box-shadow: inset 1px 1px 1px #DFDFDF;
 }
 #msgclose1{
   position: absolute;
@@ -87,7 +86,7 @@ body{
   z-index: 1;
   text-align: center;
 }
-#msg2{  
+#msg2{
   position:absolute;/*
   top:100px;*/
   background-color:#F7F8FA;
@@ -128,7 +127,7 @@ body{
   background: #F7F7F7;
 }
 #newconfirm2>input:active {
-    box-shadow: inset 1px 1px 1px #DFDFDF;   
+    box-shadow: inset 1px 1px 1px #DFDFDF;
 }
 #msgclose2{
   position: absolute;
