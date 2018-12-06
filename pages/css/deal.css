@@ -7,6 +7,7 @@ body{
 }
 
 #dialog1{
+  display: none;
   position: fixed;
   top:0px;
   left: 0px;
@@ -17,7 +18,7 @@ body{
   z-index: 1;
   text-align: center;
 }
-#msg1{  
+#msg1{
   position:absolute;/*
   top:100px;*/
   background-color:#F7F8FA;
@@ -70,6 +71,7 @@ body{
 }
 
 #dialog2{
+  display: none;
   position: fixed;
   top:0px;
   left: 0px;
@@ -80,7 +82,7 @@ body{
   z-index: 1;
   text-align: center;
 }
-#msg2{  
+#msg2{ 
   position:absolute;/*
   top:100px;*/
   background-color:#F7F8FA;

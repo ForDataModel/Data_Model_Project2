@@ -11,6 +11,7 @@ body{
 }
 
 #dialog1{
+  display: none;
   position: fixed;
   top:0px;
   left: 0px;
@@ -75,6 +76,7 @@ body{
 }
 
 #dialog2{
+  display: none;
   position: fixed;
   top:0px;
   left: 0px;

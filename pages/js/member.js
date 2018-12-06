@@ -17,12 +17,9 @@ $(".edit").on("click",function(){
   })
 })
 
-$(document).ready(function(){
 $("#dialog").css("display","none");
 $("#msg").css("display","none");
 $("#dialog").css("opacity","0.5");
-
-});
 
 function closeDialog(){
 $("#dialog").css("display","none");
