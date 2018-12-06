@@ -4,17 +4,18 @@ $(".delete").on("click",function(){
 
 var td1 = "";
 var td2 = "";
+var ID = "";
 $(".edit").on("click",function(){
+  ID = $(this).parent().prev().prev().prev().prev().text();
+  $(this).parent().prev().prev().prev().prev().text("");
+  $(this).parent().prev().prev().prev().prev().html("<input type='text' name='Supplier_ID' value='"+ID+"'>");
   td1 = $(this).parent().prev().prev().text();
   $(this).parent().prev().prev().text("");
-  $(this).parent().prev().prev().html("<input value='"+td1+"'>");
+  $(this).parent().prev().prev().html("<input name='phone' value='"+td1+"'>");
   td2 = $(this).parent().prev().text();
   $(this).parent().prev().text("");
-  $(this).parent().prev().html("<input value='"+td2+"'>");
-  $(this).parent().html("<button class='conform'>確認</button>");
-  $(".conform").on("click",function(){
-    location.reload();
-  })
+  $(this).parent().prev().html("<input name='address' value='"+td2+"'>");
+  $(this).parent().html("<input type='submit' value='確認'></input>");
 })
 
 $("#dialog").css("display","none");

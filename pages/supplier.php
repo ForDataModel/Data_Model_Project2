@@ -4,14 +4,8 @@
     if (!mysqli_select_db($db,$dbname)) {
         die("無法開啟$dbname資料庫");
     }
-    $sqlStation = "SELECT s.Address, s.Name AS stationName, s.Phone_number, Staff.Name
-              FROM Station AS s, Staff
-             WHERE s.Manager_ID = Staff.Staff_ID";
-    $sqlManager = "SELECT Staff.Staff_ID, Staff.NAME AS staffName
-                    FROM Staff, Fulltime
-                    WHERE staff.Staff_ID = Fulltime.Staff_ID";
-    $resultStation = mysqli_query($db,$sqlStation);
-    $resultManager = mysqli_query($db,$sqlManager);
+    $sqlSupplier = "SELECT * FROM Supplier";
+    $resultSupplier = mysqli_query($db,$sqlSupplier);
     $err = mysqli_error($db);
     echo $err;
     mysqli_close($db);
@@ -20,6 +14,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,8 +31,10 @@
 
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="css/supplier.css" rel="stylesheet" type="text/css">
 
-    <link href="css/station.css" rel="stylesheet">
+    <!-- Morris Charts CSS -->
+    <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -67,7 +64,6 @@
                 <a class="navbar-brand" href="index.html">Data Base Admin</a>
             </div>
             <!-- /.navbar-header -->
-
             <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -116,79 +112,83 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Stations</h1>
+                    <h1 class="page-header">Suppliers</h1>
                 </div>
-                <!-- /.col-lg-12 -->
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                <?php 
-                    while ($rowStation = mysqli_fetch_array($resultStation)) {
-                            $Address = $rowStation["Address"];
-                            $stationName = $rowStation["stationName"];
-                            $Phone_number = $rowStation["Phone_number"];
-                            $Staff_Name = $rowStation["Name"];
-                            echo "<div class='col-lg-3 box item'>";
-                            echo "<div class='img'>";
-                            echo "<a href='#'><img src='img/1.jpg' width='100%'></a>";
-                            echo "</div>";
-                            echo "<hr>";
-                            echo "<div class='text'>";
-                            echo "<p>$stationName</p>";
-                            echo "<p>地址：$Address</p>";
-                            echo "<p>電話：$Phone_number</p>";
-                            echo "<p>負責人：$Staff_Name</p>";
-                            echo "</div>";
-                            echo "</div>";
-                    }
-                ?>   
-                <div class="col-lg-3 box">
-                        <div onclick="showDialog()" class="add">
-                            <img src="img/add.png" width="50%" height="100%">
+                    <div class="col-lg-1">
+                        <button onclick="showDialog()" class="btn btn-default">新增</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="dialog">
+                </div>
+                <form method="post" action="insertSupplier.php">
+                <div id="msg" class="col-xs-4 col-xs-offset-2">
+                    <div>
+                        <i id="msgclose" class="fa fa-times col-xs-1 col-xs-offset-10" aria-hidden="true" onclick="closeDialog();"></i>
+                    </div>
+                    <div class="col-xs-12 poptext">
+                        <p class="col-xs-5">供應商名</p>            
+                        <input class="col-xs-7" name="supplierName" type="text">
+                    </div>
+                    <div class="col-xs-12 poptext">
+                        <p class="col-xs-5">電話</p>            
+                        <input class="col-xs-7" name="Phone" type="text">
+                    </div>
+                    <div class="col-xs-12">
+                        <p class="col-xs-5 poptext">地址</p>            
+                        <input class="col-xs-7" name="Address" type="text">
+                    </div>
+                    <div id="newconfirm">
+                        <input type="submit" value="確認新增" >
+                    </div> 
+                </div>
+                </form>        
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                        <div class="panel-body">
+                            <form method="post" action="updateSupplier.php">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>供應商名</th>
+                                        <th>電話</th>
+                                        <th>地址</th>
+                                        <th>修改</th>
+                                        <th>刪除</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php 
+                                     while ($rowSupplier = mysqli_fetch_array($resultSupplier)) {
+                                        $Address = $rowSupplier["Address"];
+                                        $Supplier_name = $rowSupplier["Supplier_name"];
+                                        $Phone_number = $rowSupplier["Phone_number"];
+                                        $Supplier_ID = $rowSupplier["Supplier_ID"];
+                                        echo "<tr class='odd gradeX'>";
+                                        echo "<td style='display: none;'>$Supplier_ID</input></td>";
+                                        echo "<td>$Supplier_name</td>";
+                                        echo "<td>$Phone_number</td>";
+                                        echo "<td>$Address</td>";
+                                        echo "<td class='center'><a class='edit'>修改</a></td>";
+                                        echo "<td class='center'><a href='updateSupplier.php?Delete=true&Supplier_ID=$Supplier_ID'>X</a></td>";
+                                        echo "</tr>";
+                                    }
+                                ?>   
+                                </tbody>
+                            </table>
+                            </form>
                         </div>
-                 </div>
-             <div id="dialog">
+                        <!-- /.panel-body -->
+                    </div>
 
-        </div>
-        <form method="post" action="confirmNew.php">
-        <div id="msg" class="col-xs-4 col-xs-offset-2">
-            <div>
-            <i class="fa fa-times col-xs-2 col-xs-offset-10" aria-hidden="true"onclick="closeDialog();"></i>
-            </div>
-            <div class="col-xs-12">
-            <p class="col-xs-5">名子</p>            
-            <input class="col-xs-7" type="text"  name="station_name"></div>
-            
-            <div class="col-xs-12">
-            <p class="col-xs-5">地址</p>            
-            <input class="col-xs-7" type="text" name="station_address">
-            </div>
-            <div class="col-xs-12">
-            <p class="col-xs-5">電話</p>            
-            <input class="col-xs-7" type="text" placeholder="xx-xxxx-xxxx"  name="station_phone">
-            </div>
-            <div class="col-xs-12">
-            <p class="col-xs-5">負責人</p>            
-                <select name="Staff_ID">
-                <option value="0">請選擇</option>
-                    <?php 
-	    			while ($rowManager = mysqli_fetch_array($resultManager)) {
-	    				$Staff_ID = $rowManager["Staff_ID"];
-                        $staffName = $rowManager["staffName"];
-                        echo "<option value='$Staff_ID'>$staffName</option>";
-				    }
-				    ?>
-				</select>
-            </div>
-            <div class="col-xs-12">
-                <input accept="image/*" id="uploadImage" type="file">
-                <img id="img" src="">
-            </div>
-            <div id="newconfirm">
-                <input type="submit" value="確認新增" onclick="closeDialog();" ></div>
+                <!-- /.col-lg-12 -->
             </div>
         </div>
-        </form>
         <!-- /#page-wrapper -->
 
     </div>
@@ -203,11 +203,16 @@
     <!-- Metis Menu Plugin JavaScript -->
     <script src="../vendor/metisMenu/metisMenu.min.js"></script>
 
+    <!-- Morris Charts JavaScript -->
+    <script src="../vendor/raphael/raphael.min.js"></script>
+    <script src="../vendor/morrisjs/morris.min.js"></script>
+    <script src="../data/morris-data.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
 
-    <script src="js/station.js"></script>
+    <!-- INDEX JavaScript -->
+    <script src="js/supplier.js"></script>
 
 </body>
 
