@@ -2,13 +2,8 @@ body{
   font-family:Microsoft JhengHei;
 }
 
-.back{
-	text-align: center;
-	padding-bottom: 30px;
-}
-
-.add{
-	margin-bottom: 10px;
+.items{
+	margin-top: 10px;
 }
 
 #dialog1{
@@ -23,7 +18,7 @@ body{
   z-index: 1;
   text-align: center;
 }
-#msg1{  
+#msg1{
   position:absolute;/*
   top:100px;*/
   background-color:#F7F8FA;
@@ -87,7 +82,7 @@ body{
   z-index: 1;
   text-align: center;
 }
-#msg2{  
+#msg2{ 
   position:absolute;/*
   top:100px;*/
   background-color:#F7F8FA;

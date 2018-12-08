@@ -2,43 +2,6 @@ body{
   font-family:Microsoft JhengHei;
 }
 
-.box{
-  height: 400px;
-  border: 1px solid black;
-  border-radius: 10px 10px;
-  margin-left: 4%;
-  margin-right: 4%;
-  margin-top: 50px;
-  margin-bottom: 50px;
-  padding: 1%;
-}
-
-.box:hover{
-  cursor: pointer;
-}
-
-.text{
-  margin-top: 30px;
-}
-
-.text p{
-  font-size: 20px;
-}
-
-hr{
-  color: black;
-}
-
-.add{
-  text-align: center;
-  padding-top: 50%;
-  overflow: hidden;
-}
-
-.add img:hover{
-  cursor: pointer;
-}
-
 #dialog{
   display: none;
   position: fixed;
@@ -52,7 +15,7 @@ hr{
   text-align: center;
 }
 #msg{  
- position:absolute;/*
+  position:absolute;/*
   top:100px;*/
   background-color:#F7F8FA;
   width:400px;
@@ -60,12 +23,11 @@ hr{
   border:30px solid transparent;
   border-radius: 20px;
   font-family:Microsoft JhengHei;
-  margin-top: -100px;
   box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.8);
 }
-/*#msg>p,input{
-  margin-top: 30px;
-}*/
+#msg>div>p,input{
+  margin-top: 10px;
+}
 #msg>i{
   position: absolute;
   cursor: pointer;
@@ -94,11 +56,21 @@ hr{
 #newconfirm>input:active {
     box-shadow: inset 1px 1px 1px #DFDFDF;   
 }
-.fa{
-  padding-bottom: 10px;
+#msgclose{
+  position: absolute;
   cursor: pointer;
 }
 #newconfirm{
   text-align: center;
-  margin-top: 230px;
+  margin-top: 160px;
+}
+.edit{
+  cursor: pointer;
+}
+.delete{
+  cursor: pointer;
+}
+
+.poptext p{
+  font-size: 18px;
 }

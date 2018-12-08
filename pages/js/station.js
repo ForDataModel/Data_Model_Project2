@@ -44,7 +44,7 @@ $(".add img").on("click",function(){
 })
 
 $(".item").on("click",function(){
-	window.location.href="storage.html";
+	window.location.href="storage.php";
 })
 
 $(".delete").on("click",function(){
@@ -67,10 +67,9 @@ $(".edit").on("click",function(){
 })
 
 $(document).ready(function(){
-$("#dialog").css("display","none");
-$("#msg").css("display","none");
-$("#dialog").css("opacity","0.5");
-
+	$("#dialog").css("display","none");
+	$("#msg").css("display","none");
+	$("#dialog").css("opacity","0.5");
 });
 
 function closeDialog(){

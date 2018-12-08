@@ -1,7 +1,20 @@
+<?php
+    $db = mysqli_connect("localhost","root","root") or die("無法開啟MySQL伺服器連接!");
+    $dbname = "Gastation";
+    if (!mysqli_select_db($db,$dbname)) {
+        die("無法開啟$dbname資料庫");
+    }
+    $sqlSupplier = "SELECT * FROM Supplier";
+    $resultSupplier = mysqli_query($db,$sqlSupplier);
+    $err = mysqli_error($db);
+    echo $err;
+    mysqli_close($db);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,8 +31,10 @@
 
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="css/supplier.css" rel="stylesheet" type="text/css">
 
-    <link href="css/station.css" rel="stylesheet">
+    <!-- Morris Charts CSS -->
+    <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -49,7 +64,6 @@
                 <a class="navbar-brand" href="index.html">Data Base Admin</a>
             </div>
             <!-- /.navbar-header -->
-
             <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -98,100 +112,84 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Stations</h1>
+                    <h1 class="page-header">Suppliers</h1>
                 </div>
-                <!-- /.col-lg-12 -->
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="col-lg-3 box item">
-                      <div class="img">
-                        <a href="#"><img src="img/1.jpg" width="100%"></a>
-                      </div>
-                      <hr>
-                      <div class="text">
-                        <p>泰山加油站</p>
-                        <p>新北市泰山區泰林路二段424號</p>
-                        <p>02-2909-7921</p>
-                      </div>
-                    </div>
-                    <div class="col-lg-3 box item">
-                        <div class="img">
-                        <a href="#"><img src="img/1.jpg" width="100%"></a>
-                      </div>
-                      <hr>
-                      <div class="text">
-                        <p>泰山加油站</p>
-                        <p>新北市泰山區泰林路二段424號</p>
-                        <p>02-2909-7921</p>
-                      </div>
-                    </div>
-                    <div class="col-lg-3 box item">
-                        <div class="img">
-                        <a href="#"><img src="img/1.jpg" width="100%"></a>
-                      </div>
-                      <hr>
-                      <div class="text">
-                        <p>泰山加油站</p>
-                        <p>新北市泰山區泰林路二段424號</p>
-                        <p>02-2909-7921</p>
-                      </div>
+                    <div class="col-lg-1">
+                        <button onclick="showDialog()" class="btn btn-default">新增</button>
                     </div>
                 </div>
-                <div class="col-lg-12">
-                    <div class="col-lg-3 box item">
-                        <div class="img">
-                        <a href="#"><img src="img/1.jpg" width="100%"></a>
-                      </div>
-                      <hr>
-                      <div class="text">
-                        <p>泰山加油站</p>
-                        <p>新北市泰山區泰林路二段424號</p>
-                        <p>02-2909-7921</p>
-                      </div>
+            </div>
+            <div class="row">
+                <div id="dialog">
+                </div>
+                <form method="post" action="insertSupplier.php">
+                <div id="msg" class="col-xs-4 col-xs-offset-2">
+                    <div>
+                        <i id="msgclose" class="fa fa-times col-xs-1 col-xs-offset-10" aria-hidden="true" onclick="closeDialog();"></i>
                     </div>
-                    <div class="col-lg-3 box item">
-                        <div class="img">
-                        <a href="#"><img src="img/1.jpg" width="100%"></a>
-                      </div>
-                      <hr>
-                      <div class="text">
-                        <p>泰山加油站</p>
-                        <p>新北市泰山區泰林路二段424號</p>
-                        <p>02-2909-7921</p>
-                      </div>
+                    <div class="col-xs-12 poptext">
+                        <p class="col-xs-5">供應商名</p>            
+                        <input class="col-xs-7" name="supplierName" type="text">
                     </div>
-                    <div class="col-lg-3 box">
-                        <div onclick="showDialog()" class="add">
-                            <img src="img/add.png" width="50%" height="100%">
-                        </div>
-                    </div>
-                    <div id="dialog">
-                    </div>
-                    <div id="msg" class="col-xs-4 col-xs-offset-2">
-                        <div>
-                        <i class="fa fa-times col-xs-2 col-xs-offset-10" aria-hidden="true"onclick="closeDialog();"></i>
-                        </div>
-                        <div class="col-xs-12">
-                        <p class="col-xs-5">名子</p>            
-                        <input class="col-xs-7" type="text"></div>
-                        
-                        <div class="col-xs-12">
-                        <p class="col-xs-5">地址</p>            
-                        <input class="col-xs-7" type="text">
-                        </div>
-                        <div class="col-xs-12">
+                    <div class="col-xs-12 poptext">
                         <p class="col-xs-5">電話</p>            
-                        <input class="col-xs-7" type="text" placeholder="xx-xxxx-xxxx">
-                        </div>
-                        <div class="col-xs-12">
-                            <input accept="image/*" id="uploadImage" type="file">
-                            <img id="img" src="">
-                        </div>
-                        <div id="newconfirm"><input type="button" value="確認新增" onclick="closeDialog();" ></div>
-                            </d8iv>
-                        </div>
+                        <input class="col-xs-7" name="Phone" type="text">
                     </div>
+                    <div class="col-xs-12">
+                        <p class="col-xs-5 poptext">地址</p>            
+                        <input class="col-xs-7" name="Address" type="text">
+                    </div>
+                    <div id="newconfirm">
+                        <input type="submit" value="確認新增" >
+                    </div> 
+                </div>
+                </form>        
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                        <div class="panel-body">
+                            <form method="post" action="updateSupplier.php">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>供應商名</th>
+                                        <th>電話</th>
+                                        <th>地址</th>
+                                        <th>修改</th>
+                                        <th>刪除</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php 
+                                     while ($rowSupplier = mysqli_fetch_array($resultSupplier)) {
+                                        $Address = $rowSupplier["Address"];
+                                        $Supplier_name = $rowSupplier["Supplier_name"];
+                                        $Phone_number = $rowSupplier["Phone_number"];
+                                        $Supplier_ID = $rowSupplier["Supplier_ID"];
+                                        echo "<tr class='odd gradeX'>";
+                                        echo "<td style='display: none;'>$Supplier_ID</input></td>";
+                                        echo "<td>$Supplier_name</td>";
+                                        echo "<td>$Phone_number</td>";
+                                        echo "<td>$Address</td>";
+                                        echo "<td class='center'><a class='edit'>修改</a></td>";
+                                        echo "<td class='center'><a href='updateSupplier.php?Delete=true&Supplier_ID=$Supplier_ID'>X</a></td>";
+                                        echo "</tr>";
+                                    }
+                                ?>   
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+
+                <!-- /.col-lg-12 -->
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->
@@ -205,11 +203,16 @@
     <!-- Metis Menu Plugin JavaScript -->
     <script src="../vendor/metisMenu/metisMenu.min.js"></script>
 
+    <!-- Morris Charts JavaScript -->
+    <script src="../vendor/raphael/raphael.min.js"></script>
+    <script src="../vendor/morrisjs/morris.min.js"></script>
+    <script src="../data/morris-data.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
 
-    <script src="js/station.js"></script>
+    <!-- INDEX JavaScript -->
+    <script src="js/supplier.js"></script>
 
 </body>
 

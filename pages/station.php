@@ -1,3 +1,21 @@
+<?php
+    $db = mysqli_connect("localhost","root","root") or die("無法開啟MySQL伺服器連接!");
+    $dbname = "Gastation";
+    if (!mysqli_select_db($db,$dbname)) {
+        die("無法開啟$dbname資料庫");
+    }
+    $sqlStation = "SELECT s.Address, s.Name AS stationName, s.Phone_number, Staff.Name
+              FROM Station AS s, Staff
+             WHERE s.Manager_ID = Staff.Staff_ID";
+    $sqlManager = "SELECT Staff.Staff_ID, Staff.NAME AS staffName
+                    FROM Staff, Fulltime
+                    WHERE staff.Staff_ID = Fulltime.Staff_ID";
+    $resultStation = mysqli_query($db,$sqlStation);
+    $resultManager = mysqli_query($db,$sqlManager);
+    $err = mysqli_error($db);
+    echo $err;
+    mysqli_close($db);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -104,94 +122,74 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="col-lg-3 box item">
-                      <div class="img">
-                        <a href="#"><img src="img/1.jpg" width="100%"></a>
-                      </div>
-                      <hr>
-                      <div class="text">
-                        <p>泰山加油站</p>
-                        <p>新北市泰山區泰林路二段424號</p>
-                        <p>02-2909-7921</p>
-                      </div>
-                    </div>
-                    <div class="col-lg-3 box item">
-                        <div class="img">
-                        <a href="#"><img src="img/1.jpg" width="100%"></a>
-                      </div>
-                      <hr>
-                      <div class="text">
-                        <p>泰山加油站</p>
-                        <p>新北市泰山區泰林路二段424號</p>
-                        <p>02-2909-7921</p>
-                      </div>
-                    </div>
-                    <div class="col-lg-3 box item">
-                        <div class="img">
-                        <a href="#"><img src="img/1.jpg" width="100%"></a>
-                      </div>
-                      <hr>
-                      <div class="text">
-                        <p>泰山加油站</p>
-                        <p>新北市泰山區泰林路二段424號</p>
-                        <p>02-2909-7921</p>
-                      </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="col-lg-3 box item">
-                        <div class="img">
-                        <a href="#"><img src="img/1.jpg" width="100%"></a>
-                      </div>
-                      <hr>
-                      <div class="text">
-                        <p>泰山加油站</p>
-                        <p>新北市泰山區泰林路二段424號</p>
-                        <p>02-2909-7921</p>
-                      </div>
-                    </div>
-                    <div class="col-lg-3 box item">
-                        <div class="img">
-                        <a href="#"><img src="img/1.jpg" width="100%"></a>
-                      </div>
-                      <hr>
-                      <div class="text">
-                        <p>泰山加油站</p>
-                        <p>新北市泰山區泰林路二段424號</p>
-                        <p>02-2909-7921</p>
-                      </div>
-                    </div>
-                    <div class="col-lg-3 box">
+                <?php 
+                    while ($rowStation = mysqli_fetch_array($resultStation)) {
+                            $Address = $rowStation["Address"];
+                            $stationName = $rowStation["stationName"];
+                            $Phone_number = $rowStation["Phone_number"];
+                            $Staff_Name = $rowStation["Name"];
+                            echo "<div class='col-lg-3 box item'>";
+                            echo "<div class='img'>";
+                            echo "<a href='#'><img src='img/1.jpg' width='100%'></a>";
+                            echo "</div>";
+                            echo "<hr>";
+                            echo "<div class='text'>";
+                            echo "<p>$stationName</p>";
+                            echo "<p>地址：$Address</p>";
+                            echo "<p>電話：$Phone_number</p>";
+                            echo "<p>負責人：$Staff_Name</p>";
+                            echo "</div>";
+                            echo "</div>";
+                    }
+                ?>   
+                <div class="col-lg-3 box">
                         <div onclick="showDialog()" class="add">
                             <img src="img/add.png" width="50%" height="100%">
                         </div>
-                    </div>
-                    <div id="dialog">
-                    </div>
-                    <div id="msg" class="col-xs-4 col-xs-offset-2">
-                        <div>
-                        <i class="fa fa-times col-xs-2 col-xs-offset-10" aria-hidden="true"onclick="closeDialog();"></i>
-                        </div>
-                        <div class="col-xs-12">
-                        <p class="col-xs-5">名子</p>            
-                        <input class="col-xs-7" type="text"></div>
-                        
-                        <div class="col-xs-12">
-                        <p class="col-xs-5">地址</p>            
-                        <input class="col-xs-7" type="text">
-                        </div>
-                        <div class="col-xs-12">
-                        <p class="col-xs-5">電話</p>            
-                        <input class="col-xs-7" type="text" placeholder="xx-xxxx-xxxx">
-                        </div>
-                        <div class="col-xs-12">
-                            <input accept="image/*" id="uploadImage" type="file">
-                            <img id="img" src="">
-                        </div>
-                        <div id="newconfirm"><input type="button" value="確認新增" onclick="closeDialog();" ></div>
-                            </d8iv>
-                        </div>
-                    </div>
+                 </div>
+             <div id="dialog">
+
+        </div>
+        <form method="post" action="confirmNew.php">
+        <div id="msg" class="col-xs-4 col-xs-offset-2">
+            <div>
+            <i class="fa fa-times col-xs-2 col-xs-offset-10" aria-hidden="true"onclick="closeDialog();"></i>
+            </div>
+            <div class="col-xs-12">
+            <p class="col-xs-5">名子</p>            
+            <input class="col-xs-7" type="text"  name="station_name"></div>
+            
+            <div class="col-xs-12">
+            <p class="col-xs-5">地址</p>            
+            <input class="col-xs-7" type="text" name="station_address">
+            </div>
+            <div class="col-xs-12">
+            <p class="col-xs-5">電話</p>            
+            <input class="col-xs-7" type="text" placeholder="xx-xxxx-xxxx"  name="station_phone">
+            </div>
+            <div class="col-xs-12">
+            <p class="col-xs-5">負責人</p>            
+                <select name="Staff_ID">
+                <option value="0">請選擇</option>
+                    <?php 
+	    			while ($rowManager = mysqli_fetch_array($resultManager)) {
+	    				$Staff_ID = $rowManager["Staff_ID"];
+                        $staffName = $rowManager["staffName"];
+                        echo "<option value='$Staff_ID'>$staffName</option>";
+				    }
+				    ?>
+				</select>
+            </div>
+            <div class="col-xs-12">
+                <input accept="image/*" id="uploadImage" type="file">
+                <img id="img" src="">
+            </div>
+            <div id="newconfirm">
+                <input type="submit" value="確認新增" onclick="closeDialog();" ></div>
+            </div>
+        </div>
+        </form>
+        <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->

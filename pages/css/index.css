@@ -1,33 +1,143 @@
-#dialog{
-	position: fixed;
-	top:0px;
-	left: 0px;
-	width: 100%;
-	height: 100%;
-	margin:0px;
-	background-color: #000000;
-	z-index: 1;
-	text-align: center;
+body{
+  font-family:Microsoft JhengHei;
 }
-#msg{  
-	position:absolute;/*
-	top:100px;*/
-	background-color:rgb(183,233,249);
-	width:400px;
-	z-index:3;
-	border:30px solid transparent;
+
+.add{
+	margin-bottom: 10px;
 }
-/*#msg>p,input{
-	margin-top: 30px;
-}*/
-#msg>i{
-	position: absolute;
-	cursor: pointer;
+
+#page-wrapper{
+	padding-bottom: 50px;
 }
-.fa{
-	padding-bottom: 10px;
+
+#dialog1{
+  display: none;
+  position: fixed;
+  top:0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  margin:0px;
+  background-color: #000000;
+  z-index: 1;
+  text-align: center;
 }
-#newconfirm{
-	text-align: center;
-	margin-top: 230px;
+#msg1{
+  position:absolute;/*
+  top:100px;*/
+  background-color:#F7F8FA;
+  width:400px;
+  z-index:3;
+  border:30px solid transparent;
+  border-radius: 20px;
+  font-family:Microsoft JhengHei;
+  margin-top: -100px;
+  box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.8);
+}
+#msg1>div>p,input{
+  margin-top: 10px;
+}
+#msg1>i{
+  position: absolute;
+  cursor: pointer;
+}
+#msg1>div{
+  padding: 10px;
+}
+#msg1>div>#img{
+  width: 100%;
+}
+#newconfirm1>input{
+  color: #444444;
+  background: #F3F3F3;
+  border: 1px #DADADA solid;
+  padding: 5px 10px;
+  border-radius: 2px;
+  font-size: 12pt;
+  outline: none;
+}
+#newconfirm1>input:hover{
+  border: 1px #C6C6C6 solid;
+  box-shadow: 1px 1px 1px #EAEAEA;
+  color: #333333;
+  background: #F7F7F7;
+}
+#newconfirm1>input:active {
+    box-shadow: inset 1px 1px 1px #DFDFDF;
+}
+#msgclose1{
+  position: absolute;
+  cursor: pointer;
+}
+#newconfirm1{
+  text-align: center;
+  margin-top: 160px;
+}
+
+#dialog2{
+  display: none;
+  position: fixed;
+  top:0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  margin:0px;
+  background-color: #000000;
+  z-index: 1;
+  text-align: center;
+}
+#msg2{
+  position:absolute;/*
+  top:100px;*/
+  background-color:#F7F8FA;
+  width:400px;
+  z-index:3;
+  border:30px solid transparent;
+  border-radius: 20px;
+  font-family:Microsoft JhengHei;
+  margin-top: -300px;
+  box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.8);
+}
+#msg2>div>p,input{
+  margin-top: 10px;
+}
+#msg2>i{
+  position: absolute;
+  cursor: pointer;
+}
+#msg2>div{
+  padding: 10px;
+}
+#msg2>div>#img{
+  width: 100%;
+}
+#newconfirm2>input{
+  color: #444444;
+  background: #F3F3F3;
+  border: 1px #DADADA solid;
+  padding: 5px 10px;
+  border-radius: 2px;
+  font-size: 12pt;
+  outline: none;
+}
+#newconfirm2>input:hover{
+  border: 1px #C6C6C6 solid;
+  box-shadow: 1px 1px 1px #EAEAEA;
+  color: #333333;
+  background: #F7F7F7;
+}
+#newconfirm2>input:active {
+    box-shadow: inset 1px 1px 1px #DFDFDF;
+}
+#msgclose2{
+  position: absolute;
+  cursor: pointer;
+}
+#newconfirm2{
+  text-align: center;
+  margin-top: 160px;
+}
+
+.poptext p{
+	font-size: 18px;
 }
