@@ -4,18 +4,29 @@
     if (!mysqli_select_db($db,$dbname)) {
         die("無法開啟$dbname資料庫");
     }
-    $sqlOil = "SELECT o.Name, MAX(o.Oil_cost), MAX(o.Oil_price), ROUND(SUM(o.Oil_amount),2), sup.Supplier_name
-            FROM Oil AS o, Supplier AS sup, Station AS s
-            WHERE sup.Supplier_ID = s.Oil_Supplier_ID AND o.Station_ID = s.Station_ID
-            GROUP BY o.Name, o.Station_ID";
+    $sqlOil = "SELECT sto.oil_Name, AVG(o.Oil_cost),sto.oil_sale_price, ROUND(sto.oil_Total_Amount, 2), sup.Supplier_name, s.Name AS Station_name
+                 FROM Oil AS o, Supplier AS sup, Station AS s, storage AS sto
+                WHERE sup.Supplier_ID = s.Oil_Supplier_ID AND sto.station_ID = s.Station_ID AND o.Name = sto.oil_Name
+             GROUP BY sto.storage_ID";
     $resultOil = mysqli_query($db,$sqlOil);
 
-    $sqlProduct = "SELECT p.Product_name, MAX(p.Cost), MAX(p.Price), ROUND(SUM(p.Product_amount)), sup.Supplier_name
-              FROM Product AS p, Supplier AS sup, Station AS s
-             WHERE sup.Supplier_ID = s.Product_Supplier_ID AND p.Station_ID = s.Station_ID
-             GROUP BY p.Product_name, p.Station_ID  
-             ORDER BY p.Product_name  DESC";
+    $sqlProduct = "SELECT g.Product_name, AVG(p.Cost), g.Product_Sale_Price, ROUND(SUM(g.Product_total_amount)), sup.Supplier_name, s.Name AS Station_name
+                     FROM Product AS p, Supplier AS sup, Station AS s, Goods AS g
+                    WHERE sup.Supplier_ID = s.Product_Supplier_ID AND g.station_ID = s.Station_ID AND g.Product_name = p.Product_name
+                 GROUP BY g.goods_ID";
     $resultProduct = mysqli_query($db,$sqlProduct);
+
+    $sqlStation = "SELECT Station_ID, Name AS Station_Name FROM Station";
+    $resultStation = mysqli_query($db,$sqlStation);
+
+    $sqlStation2 = "SELECT Station_ID, Name AS Station_Name FROM Station";
+    $resultStation2 = mysqli_query($db,$sqlStation2);
+
+    $sqlOilName = "SELECT oil_Name FROM storage GROUP BY oil_Name";
+    $resultOilName = mysqli_query($db,$sqlOilName);
+
+    $sqlProductName = "SELECT Product_name FROM Product GROUP BY Product_name";
+    $resultProductName = mysqli_query($db,$sqlProductName);
 
     $err = mysqli_error($db);
     echo $err;
@@ -48,13 +59,14 @@
 
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+    <script src="js/storage.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
 
 </head>
 
@@ -132,7 +144,56 @@
                 <div class="row">
                 	<div class="col-lg-12">
                         <div class="panel-body">
-                        	<h2>油品 <span> [</span><a href="#">新增</a><span>]</span></h2>
+                            <h2>油品</h2>
+                            <div class="add">
+                                <button onclick="showDialog1()" class="btn btn-default">新增</button>
+                            </div>
+                            <div class="row">
+                                <div id="dialog1"></div>
+                                <form action="updateCommodity.php?Oil=1" method="post">
+                                <div id="msg1" class="col-xs-4 col-xs-offset-2">
+                                    <div>
+                                        <i id="msgclose1" class="fa fa-times col-xs-1 col-xs-offset-10" aria-hidden="true" onclick="closeDialog1();"></i>
+                                    </div>
+                                    <div class="col-xs-12 poptext">
+                                        <p class="col-xs-5">油品名稱</p>
+                                        <select name="Oil_Name" class="col-xs-7">
+                                        <option value="0">請選擇</option>
+                                        <?php 
+	    			                        while ($rowOilName= mysqli_fetch_array($resultOilName)) {
+                                                   $oil_Name = $rowOilName["oil_Name"];
+                                                   echo "<option value='$oil_Name'>$oil_Name</option>";
+				                            }
+				                        ?>
+				                    </select>
+                                    </div>
+                                    <div class="col-xs-12 poptext">
+                                        <p class="col-xs-5" >成本價格</p>
+                                        <input class="col-xs-7" type="text" name="Oil_cost">
+                                    </div>
+                                    <div class="col-xs-12 poptext">
+                                        <p class="col-xs-5" >購買數量</p>
+                                        <input class="col-xs-7" type="text" name="Oil_amount">
+                                    </div>
+                                    <div class="col-xs-12 poptext">
+                                        <p class="col-xs-5">加油站名</p>
+                                        <select name="station_ID" class="col-xs-7">
+                                        <option value="0">請選擇</option>
+                                        <?php 
+	    			                        while ($rowStation= mysqli_fetch_array($resultStation)) {
+                                                   $Station_ID = $rowStation["Station_ID"];
+                                                   $Station_Name = $rowStation["Station_Name"];
+                                                   echo "<option value='$Station_ID'>$Station_Name</option>";
+				                            }
+				                        ?>
+				                    </select>
+                                    </div>
+                                    <div id="newconfirm1">
+                                        <input type="submit" value="確認新增" onclick="closeDialog1();" >
+                                    </div>
+                                </div>
+                            </form>
+                            </div>
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
@@ -140,22 +201,25 @@
                                          <th>存量(L)</th>
                                          <th>進貨價格</th>
                                          <th>出售價格</th>
+                                         <th>加油站名</th>
                                          <th>供應商</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php 
                                         while ($rowOil = mysqli_fetch_array($resultOil)) {
-                                            $Name = $rowOil["Name"];
-                                            $Oil_cost = $rowOil["MAX(o.Oil_cost)"];
-                                            $Oil_price = $rowOil["MAX(o.Oil_price)"];
-                                            $Oil_amount = $rowOil["ROUND(SUM(o.Oil_amount),2)"];
+                                            $oil_Name = $rowOil["oil_Name"];
+                                            $Oil_cost = $rowOil["AVG(o.Oil_cost)"];
+                                            $oil_sale_price = $rowOil["oil_sale_price"];
+                                            $oil_Total_Amount = $rowOil["ROUND(sto.oil_Total_Amount, 2)"];
                                             $Supplier_name = $rowOil["Supplier_name"];
+                                            $Station_name = $rowOil["Station_name"];
                                             echo "<tr>";
-                                            echo "<td>$Name</td>";
-                                            echo "<td>$Oil_amount</td>";
+                                            echo "<td>$oil_Name</td>";
+                                            echo "<td>$oil_Total_Amount</td>";
                                             echo "<td>$Oil_cost</td>";
-                                            echo "<td>$Oil_price</td>";
+                                            echo "<td>$oil_sale_price</td>";
+                                            echo "<td>$Station_name</td>";
                                             echo "<td>$Supplier_name</td>";
                                             //echo "<td><a href ='licenseUpdate.php?id=$license_file_no'>$license_file_no</td>";
                                             echo "</tr>";
@@ -170,7 +234,56 @@
                 <div class="row">
                 	<div class="col-lg-12">
                         <div class="panel-body">
-                            <h2>副產品 <span> [</span><a href="#">新增</a><span>]</span></h2>
+                            <h2>副產品 </h2>
+                            <div class="add">
+                                <button onclick="showDialog2()" class="btn btn-default">新增</button>
+                            </div>
+                            <div class="row">
+                                <div id="dialog2"></div>
+                                <form action="updateCommodity.php?Product=1" method="post">
+                                <div id="msg2" class="col-xs-4 col-xs-offset-2">
+                                    <div>
+                                        <i id="msgclose2" class="fa fa-times col-xs-1 col-xs-offset-10" aria-hidden="true" onclick="closeDialog2();"></i>
+                                    </div>
+                                    <div class="col-xs-12 poptext">
+                                    <p class="col-xs-5">副產品名稱</p>
+                                        <select name="Product_Name" class="col-xs-7">
+                                        <option value="0">請選擇</option>
+                                        <?php 
+	    			                        while ($rowProductName= mysqli_fetch_array($resultProductName)) {
+                                                   $Product_Name = $rowProductName["Product_name"];
+                                                   echo "<option value='$Product_Name'>$Product_Name</option>";
+				                            }
+				                        ?>
+				                    </select>
+                                    </div>
+                                    <div class="col-xs-12 poptext">
+                                        <p class="col-xs-5" >成本價格</p>
+                                        <input class="col-xs-7" type="text" name="Product_cost">
+                                    </div>
+                                    <div class="col-xs-12 poptext">
+                                        <p class="col-xs-5" >購買數量</p>
+                                        <input class="col-xs-7" type="text" name="Product_amount">
+                                    </div>
+                                    <div class="col-xs-12 poptext">
+                                        <p class="col-xs-5">加油站名</p>
+                                        <select name="station_ID2" class="col-xs-7">
+                                        <option value="0">請選擇</option>
+                                        <?php 
+	    			                        while ($rowStation2= mysqli_fetch_array($resultStation2)) {
+                                                   $Station_ID2 = $rowStation2["Station_ID"];
+                                                   $Station_Name2 = $rowStation2["Station_Name"];
+                                                   echo "<option value='$Station_ID2'>$Station_Name2</option>";
+				                            }
+				                        ?>
+				                    </select>
+                                    </div>
+                                    <div id="newconfirm2">
+                                        <input type="submit" value="確認新增" onclick="closeDialog2();" >
+                                    </div>
+                                </div>
+                                </form>
+                            </div>
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
@@ -178,6 +291,7 @@
                                          <th>存量</th>
                                          <th>買入價格</th>
                                          <th>出售價格</th>
+                                         <th>加油站名</th>
                                          <th>供應商</th>
                                     </tr>
                                 </thead>
@@ -185,16 +299,18 @@
                                     <?php 
                                         while ($rowProduct = mysqli_fetch_array($resultProduct)) {
                                             $Product_name = $rowProduct["Product_name"];
-                                            $Cost = $rowProduct["MAX(p.Cost)"];
-                                            $Price = $rowProduct["MAX(p.Price)"];
-                                            $Product_amount = $rowProduct["ROUND(SUM(p.Product_amount))"];
-                                            $Supplier_nameProduct = $rowProduct["Supplier_name"];
+                                            $Cost = $rowProduct["AVG(p.Cost)"];
+                                            $Product_Sale_Price = $rowProduct["Product_Sale_Price"];
+                                            $Product_total_amount = $rowProduct["ROUND(SUM(g.Product_total_amount))"];
+                                            $Supplier_name_Product = $rowProduct["Supplier_name"];
+                                            $Station_name = $rowProduct["Station_name"];
                                             echo "<tr>";
                                             echo "<td>$Product_name</td>";
-                                            echo "<td>$Product_amount</td>";
+                                            echo "<td>$Product_total_amount</td>";
                                             echo "<td>$Cost</td>";
-                                            echo "<td>$Price</td>";
-                                            echo "<td>$Supplier_nameProduct</td>";
+                                            echo "<td>$Product_Sale_Price</td>";
+                                            echo "<td>$Station_name</td>";
+                                            echo "<td>$Supplier_name_Product</td>";
                                             //echo "<td><a href ='licenseUpdate.php?id=$license_file_no'>$license_file_no</td>";
                                             echo "</tr>";
                                         }
