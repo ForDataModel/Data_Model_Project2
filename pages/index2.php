@@ -4,28 +4,51 @@
     if (!mysqli_select_db($db,$dbname)) {
         die("無法開啟$dbname資料庫");
     }
-    
-    $sql = "SELECT Staff.Name, Staff.Gender, Staff.Personal_ID,Staff.Birthday,Fulltime.Salary,Station.Name,Staff.Staff_ID,Fulltime.Staff_ID
+    if($_POST['station_id6']!=''){
+        $station_id6=$_POST['station_id6'];
+        $result = mysqli_query($db,"SELECT Staff.Name, Staff.Gender, Staff.Personal_ID,Staff.Birthday,Fulltime.Salary,Station.Name,Staff.Staff_ID,Fulltime.Staff_ID
+            FROM Staff 
+            INNER JOIN Fulltime 
+            ON Staff.Staff_ID=Fulltime.Staff_ID 
+            LEFT JOIN Station 
+            ON Staff.Station_ID=Station.Station_ID
+            WHERE Staff.Station_ID='$station_id6'");
+        $result2=mysqli_query($db,"SELECT Staff.Name, Staff.Gender, Staff.Personal_ID,Staff.Birthday,Parttime.Hourpay,Station.Name,Staff.Staff_ID
+            FROM Staff 
+            INNER JOIN Parttime 
+            ON Staff.Staff_ID=Parttime.Staff_ID
+            LEFT JOIN Station 
+            ON Staff.Station_ID=Station.Station_ID
+            WHERE Staff.Station_ID='$station_id6'");
+    }else{
+        $sql = "SELECT Staff.Name, Staff.Gender, Staff.Personal_ID,Staff.Birthday,Fulltime.Salary,Station.Name,Staff.Staff_ID,Fulltime.Staff_ID
             FROM Staff 
             INNER JOIN Fulltime 
             ON Staff.Staff_ID=Fulltime.Staff_ID 
             LEFT JOIN Station 
             ON Staff.Station_ID=Station.Station_ID";
-    $result = mysqli_query($db,$sql);
-    $sql2 ="SELECT Staff.Name, Staff.Gender, Staff.Personal_ID,Staff.Birthday,Parttime.Hourpay,Station.Name,Staff.Staff_ID
+        $result = mysqli_query($db,$sql);
+        $sql2 ="SELECT Staff.Name, Staff.Gender, Staff.Personal_ID,Staff.Birthday,Parttime.Hourpay,Station.Name,Staff.Staff_ID
             FROM Staff 
             INNER JOIN Parttime 
             ON Staff.Staff_ID=Parttime.Staff_ID
             LEFT JOIN Station 
             ON Staff.Station_ID=Station.Station_ID"
             ;
+        $result2 = mysqli_query($db,$sql2);
+    }
+    
+    
+    
     $sql3="SELECT Name, Station_ID FROM Station";
     $sql4="SELECT Name, Station_ID FROM Station";
     $sql5="SELECT Name, Station_ID FROM Station";
-    $result2 = mysqli_query($db,$sql2);
+    $sql6="SELECT Name, Station_ID FROM Station";
+    
     $result3 = mysqli_query($db,$sql3);
     $result4 = mysqli_query($db,$sql4);
     $result5 = mysqli_query($db,$sql5);
+    $result6 = mysqli_query($db,$sql6);
     $resultarraycall=array();
     $resultarrayID=array();
     for($i=1;$i<=mysqli_num_rows($result4);$i++){
@@ -121,19 +144,19 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="index.html">員工</a>
+                            <a href="index2.php">員工</a>
                         </li>
                         <li>
-                            <a href="station.html">加油站</a>
+                            <a href="station.php">加油站</a>
                         </li>
                         <li>
-                            <a href="supplier.html">供應商</a>
+                            <a href="supplier.php">供應商</a>
                         </li>
                         <li>
-                            <a href="deal.html">交易</a>
+                            <a href="deal.php">交易</a>
                         </li>
                         <li>
-                            <a href="member.html">會員</a>
+                            <a href="member.php">會員</a>
                         </li>
                     </ul>
                 </div>
@@ -146,16 +169,39 @@
                 <div class="col-lg-12">
                     <h1 class="page-header">Employees</h1>
                 </div>
+                
             </div>
             <div class="row">
                 <div class="col-lg-12">
 
                     <div class="panel-body">
+                        <div>
                         <h2>正職</h2>
+                        <div class="search-container">
+                            <div class="col-xs-8">
+                            <button onclick="showDialog1()" class="add btn btn-default">新增</button>
+                            </div>
+                            
+                        <form class="col-xs-4" action="index2.php" method="post">
 
-                     
-                        <div class="add">
-                            <button onclick="showDialog1()" class="btn btn-default">新增</button>
+                            
+                        <select name="station_id6" >
+                            <option></option>
+                                    <?php
+                                        for($i=1;$i<=mysqli_num_rows($result6);$i++){
+                                            $rs6=mysqli_fetch_row($result6);
+                                        ?>
+                                    <option value="<?php echo $rs6[1]?>"><?php echo $rs6[0]?></option>
+                             
+
+                                    <?php
+                                }
+                                ?>
+                            
+                    </select>
+                        <button type="submit" class="btn btn-default" style="text-align:right">搜尋站名</button>
+                        </form>
+                        </div>
                         </div>
                         <div class="row">
                             <div id="dialog1"></div>
