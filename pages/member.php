@@ -4,34 +4,32 @@
     if (!mysqli_select_db($db,$dbname)) {
         die("無法開啟$dbname資料庫");
     }
-    
-    $sql = "SELECT Member.Member_name, Member.Member_gender, Member.Member_birthday, Member.Card_name, Member.Member_start_time, Customer.Phone_number, Member.Member_address, Customer.Customer_ID
+    if($_POST['search']!=''){
+        $search=$_POST['search'];
+        $result = mysqli_query($db,"SELECT Member.Member_name, Member.Member_gender, Member.Member_birthday, Member.Card_name, Member.Member_start_time, Customer.Phone_number, Member.Member_address, Customer.Customer_ID
+            FROM Customer 
+            INNER JOIN Member 
+            ON Customer.Customer_ID=Member.Customer_ID
+            WHERE Member_name like '%$search%'");
+        
+    }else{
+        $sql = "SELECT Member.Member_name, Member.Member_gender, Member.Member_birthday, Member.Card_name, Member.Member_start_time, Customer.Phone_number, Member.Member_address, Customer.Customer_ID
             FROM Customer 
             INNER JOIN Member 
             ON Customer.Customer_ID=Member.Customer_ID";
-    $result = mysqli_query($db,$sql);
-    $sql2 ="SELECT Staff.Name, Staff.Gender, Staff.Personal_ID,Staff.Birthday,Parttime.Hourpay,Station.Name,Staff.Staff_ID
-            FROM Staff 
-            INNER JOIN Parttime 
-            ON Staff.Staff_ID=Parttime.Staff_ID
-            LEFT JOIN Station 
-            ON Staff.Station_ID=Station.Station_ID"
-            ;
-    $sql3="SELECT Name, Station_ID FROM Station";
-    $sql4="SELECT Name, Station_ID FROM Station";
-    $sql5="SELECT Name, Station_ID FROM Station";
-    $result2 = mysqli_query($db,$sql2);
-    $result3 = mysqli_query($db,$sql3);
-    $result4 = mysqli_query($db,$sql4);
-    $result5 = mysqli_query($db,$sql5);
-    $resultarraycall=array();
-    $resultarrayID=array();
-    for($i=1;$i<=mysqli_num_rows($result4);$i++){
-        $resultarrayName=mysqli_fetch_array($result4);
+        $result = mysqli_query($db,$sql);
         
-        array_push($resultarraycall, "$resultarrayName[0]");
-        array_push($resultarrayID, "$resultarrayName[1]");
     }
+    // $sql = "SELECT Member.Member_name, Member.Member_gender, Member.Member_birthday, Member.Card_name, Member.Member_start_time, Customer.Phone_number, Member.Member_address, Customer.Customer_ID
+    //         FROM Customer 
+    //         INNER JOIN Member 
+    //         ON Customer.Customer_ID=Member.Customer_ID";
+    // $result = mysqli_query($db,$sql);
+    
+    
+    
+    
+    
     
 
     $err = mysqli_error($db);
@@ -117,19 +115,19 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="index.html">員工</a>
+                            <a href="index2.php">員工</a>
                         </li>
                         <li>
-                            <a href="station.html">加油站</a>
+                            <a href="station.php">加油站</a>
                         </li>
                         <li>
-                            <a href="supplier.html">供應商</a>
+                            <a href="supplier.php">供應商</a>
                         </li>
                         <li>
-                            <a href="deal.html">交易</a>
+                            <a href="deal.php">交易</a>
                         </li>
                         <li>
-                            <a href="member.html">會員</a>
+                            <a href="member.php">會員</a>
                         </li>
                     </ul>
                 </div>
@@ -145,13 +143,20 @@
                     <div class="col-lg-12">
                         <h1 class="page-header">Members</h1>
                     </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="col-xs-1">
-                        <button onclick="showDialog()" class="btn btn-default">新增</button>
-                    </div>
-                </div>
-            </div>
+            <div class="search-container">
+                            <div class="col-xs-8">
+                            <button onclick="showDialog1()" class="add btn btn-default">新增</button>
+                            </div>
+                            
+                        <form class="col-xs-4" action="member.php" method="post">
+
+                            
+                        <input type="text" name="search">
+                        <button type="submit" class="btn btn-default" style="text-align:right">搜尋姓名</button>
+                        </form>
+                        </div>
+                        </div>
+
             <div class="row">
                 <form method="post" action="memberaction.php">
                 <div id="dialog">

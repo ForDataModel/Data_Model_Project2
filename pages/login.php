@@ -1,3 +1,11 @@
+<?php
+    $db = mysqli_connect("localhost","root","root") or die("無法開啟MySQL伺服器連接!");
+    $dbname = "Gastation";
+    if (!mysqli_select_db($db,$dbname)) {
+        die("無法開啟$dbname資料庫");
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -50,7 +58,7 @@
                                 <div class="form-group">
                                     <input class="form-control" placeholder="身份證字號" name="password" type="password">
                                 </div>
-                                <input class="btn btn-lg btn-success btn-block" value = "Login" type="submit">
+                                <input class="btn btn-lg btn-success btn-block" value = "Login" type="button">
                             </fieldset>
                         </form>
                     </div>
