@@ -4,24 +4,28 @@
     if (!mysqli_select_db($db,$dbname)) {
         die("無法開啟$dbname資料庫");
     }
-    $sqlOilStorage = "SELECT STORAGE.storage_ID, STORAGE.oil_Name, STORAGE.station_ID, Station.Name AS Station_Name
-                         FROM STORAGE, Station
-                        WHERE STORAGE.station_ID = Station.Station_ID";
+    $sqlOilStorage = "SELECT MAX(Oil.Oil_ID) AS Oil_ID, Oil.Name AS Oil_Name, Oil.Station_ID, s.Name AS Station_Name
+                        FROM Oil, Station AS s
+                       WHERE s.Station_ID = Oil.Station_ID
+                    GROUP BY Oil.Name, Oil.Station_ID
+                      HAVING SUM(Oil.Oil_amount)>0";
     $resultOilStorage = mysqli_query($db,$sqlOilStorage);
 
-    $sqlBuy = "SELECT Buy.Buy_ID, Buy.Buy_amount, Buy.Value, Buy.Date, Buy.Tax_id_number , storage.oil_Name 
-                 FROM Buy, storage 
-                WHERE Buy.storage_ID = storage.storage_ID";
+    $sqlBuy = "SELECT Buy.Buy_ID, Buy.Buy_amount, Buy.Value, Buy.Date, Buy.Tax_id_number , Oil.Name AS Oil_Name 
+                 FROM Buy, Oil 
+                WHERE Oil.Oil_ID = Buy.Oil_ID";
     $resultBuy = mysqli_query($db,$sqlBuy);
 
-    $sqlGoodsTotal = "SELECT Goods.goods_ID, Goods.Product_name, Goods.station_ID, Station.Name AS Station
-                        FROM Goods, Station
-                         WHERE Goods.station_ID = Station.Station_ID AND Goods.Product_total_amount>0";
+    $sqlGoodsTotal = "SELECT MAX(p.Product_ID) AS Product_ID, p.Product_name , p.Station_ID, s.Name AS Station_Name
+                        FROM Product AS p, Station AS s
+                       WHERE s.Station_ID = p.Station_ID 
+                    GROUP BY p.Product_name, p.Station_ID
+                      HAVING SUM(p.Product_amount)>0";
     $resultGoodsTotal = mysqli_query($db,$sqlGoodsTotal);
 
-    $sqlRequired = "SELECT r.Transaction_ID, r.Transaction_amount, r.Value , r.Date, r.Tax_id_number , Goods.Product_name 
-                    FROM Required AS r, Goods 
-                    WHERE r.Goods_ID = Goods.goods_ID";
+    $sqlRequired = "SELECT r.Transaction_ID, r.Transaction_amount, r.Value , r.Date, r.Tax_id_number , p.Product_name 
+                      FROM Required AS r, Product AS p 
+                     WHERE r.Product_ID = p.Product_ID";
     $resultRequired = mysqli_query($db,$sqlRequired);
 
     $sqlMember = "SELECT c.Customer_ID, m.Member_name FROM Customer AS c, Member AS m WHERE c.Customer_ID = m.Customer_ID";
@@ -183,15 +187,15 @@
                                 </div>
                                 <div class="col-xs-12 poptext">
                                     <p class="col-xs-5">交易商品</p>            
-                                    <select name="storage_IDNstation_ID" class="col-xs-7">
+                                    <select name="oil_IDNstation_ID" class="col-xs-7">
                                         <option value="0">請選擇</option>
                                         <?php 
 	    			                        while ($rowOilStorage = mysqli_fetch_array($resultOilStorage)) {
-                                                   $storage_ID = $rowOilStorage["storage_ID"];
-                                                   $station_ID = $rowOilStorage["station_ID"];
-	    				                           $oil_Name = $rowOilStorage["oil_Name"];
+                                                   $Oil_ID = $rowOilStorage["Oil_ID"];
+                                                   $Oil_Name = $rowOilStorage["Oil_Name"];
+	    				                           $Station_ID = $rowOilStorage["Station_ID"];
                                                    $Station_Name = $rowOilStorage["Station_Name"];
-                                                   echo "<option value='$storage_ID,$station_ID'>$oil_Name, $Station_Name</option>";
+                                                   echo "<option value='$Oil_ID,$Station_ID'>$Oil_Name, $Station_Name</option>";
 				                            }
 				                        ?>
 				                    </select>
@@ -244,7 +248,7 @@
                                             $Buy_ID = $rowBuy["Buy_ID"];
                                             $Buy_amount = $rowBuy["Buy_amount"];
                                             $Value = $rowBuy["Value"];
-                                            $oil_Name = $rowBuy["oil_Name"];
+                                            $Oil_Name = $rowBuy["Oil_Name"];
                                             $Date = $rowBuy["Date"];
                                             $Tax_id_number = $rowBuy["Tax_id_number"];
                                             echo "<tr class='odd gradeX'>";
@@ -253,7 +257,7 @@
                                             echo "<td>$Tax_id_number</td>";
                                             echo "<td>$Buy_amount</td>";
                                             echo "<td>$Value</td>";
-                                            echo "<td>$oil_Name</td>";
+                                            echo "<td>$Oil_Name</td>";
                                             echo "</tr>";
                                     }
                                 ?>
@@ -293,15 +297,15 @@
                                 </div>
                                 <div class="col-xs-12 poptext">
                                     <p class="col-xs-5">交易商品</p>            
-                                    <select name="goods_IDNstation_ID" class="col-xs-7">
+                                    <select name="product_IDNstation_ID" class="col-xs-7">
                                         <option value="0">請選擇</option>
                                         <?php 
 	    			                        while ($rowGoods = mysqli_fetch_array($resultGoodsTotal)) {
-                                                   $goods_ID = $rowGoods["goods_ID"];
+                                                   $Product_ID = $rowGoods["Product_ID"];
                                                    $Product_name = $rowGoods["Product_name"];
-	    				                           $station_ID = $rowGoods["station_ID"];
-                                                   $Station = $rowGoods["Station"];
-                                                   echo "<option value='$goods_ID,$station_ID'>$Product_name, $Station</option>";
+	    				                           $Station_ID = $rowGoods["Station_ID"];
+                                                   $Station_Name = $rowGoods["Station_Name"];
+                                                   echo "<option value='$Product_ID,$Station_ID'>$Product_name, $Station_Name</option>";
 				                            }
 				                        ?>
 				                    </select>

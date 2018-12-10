@@ -1,20 +1,8 @@
 <?php
-    $db = mysqli_connect("localhost","root","root") or die("無法開啟MySQL伺服器連接!");
-    $dbname = "Gastation";
-    if (!mysqli_select_db($db,$dbname)) {
+    $db = mysqli_connect("localhost","root","root","Gastation") or die("無法開啟MySQL伺服器連接!");
+    if (mysqli_connect_errno()) {
         die("無法開啟$dbname資料庫");
     }
-    $sqlOil = "SELECT sto.oil_Name, AVG(o.Oil_cost),sto.oil_sale_price, ROUND(sto.oil_Total_Amount, 2), sup.Supplier_name, s.Name AS Station_name
-                 FROM Oil AS o, Supplier AS sup, Station AS s, storage AS sto
-                WHERE sup.Supplier_ID = s.Oil_Supplier_ID AND sto.station_ID = s.Station_ID AND o.Name = sto.oil_Name
-             GROUP BY sto.storage_ID";
-    $resultOil = mysqli_query($db,$sqlOil);
-
-    $sqlProduct = "SELECT g.Product_name, AVG(p.Cost), g.Product_Sale_Price, ROUND(SUM(g.Product_total_amount)), sup.Supplier_name, s.Name AS Station_name
-                     FROM Product AS p, Supplier AS sup, Station AS s, Goods AS g
-                    WHERE sup.Supplier_ID = s.Product_Supplier_ID AND g.station_ID = s.Station_ID AND g.Product_name = p.Product_name
-                 GROUP BY g.goods_ID";
-    $resultProduct = mysqli_query($db,$sqlProduct);
 
     $sqlStation = "SELECT Station_ID, Name AS Station_Name FROM Station";
     $resultStation = mysqli_query($db,$sqlStation);
@@ -22,15 +10,16 @@
     $sqlStation2 = "SELECT Station_ID, Name AS Station_Name FROM Station";
     $resultStation2 = mysqli_query($db,$sqlStation2);
 
-    $sqlOilName = "SELECT oil_Name FROM storage GROUP BY oil_Name";
+    $sqlOilName = "SELECT Name AS Oil_Name FROM Oil GROUP BY Name";
     $resultOilName = mysqli_query($db,$sqlOilName);
 
     $sqlProductName = "SELECT Product_name FROM Product GROUP BY Product_name";
     $resultProductName = mysqli_query($db,$sqlProductName);
 
+    mysqli_commit($db);
     $err = mysqli_error($db);
     echo $err;
-    mysqli_close($db);
+  //  mysqli_close($db);
 ?>
 
 <!DOCTYPE html>
@@ -161,8 +150,8 @@
                                         <option value="0">請選擇</option>
                                         <?php 
 	    			                        while ($rowOilName= mysqli_fetch_array($resultOilName)) {
-                                                   $oil_Name = $rowOilName["oil_Name"];
-                                                   echo "<option value='$oil_Name'>$oil_Name</option>";
+                                                   $Oil_Name = $rowOilName["Oil_Name"];
+                                                   echo "<option value='$Oil_Name'>$Oil_Name</option>";
 				                            }
 				                        ?>
 				                    </select>
@@ -207,28 +196,32 @@
                                 </thead>
                                 <tbody>
                                     <?php 
+                                      $sqlOil = "CALL Storage();";
+                                      $resultOil = mysqli_query($db,$sqlOil);
+
                                         while ($rowOil = mysqli_fetch_array($resultOil)) {
-                                            $oil_Name = $rowOil["oil_Name"];
-                                            $Oil_cost = $rowOil["AVG(o.Oil_cost)"];
-                                            $oil_sale_price = $rowOil["oil_sale_price"];
-                                            $oil_Total_Amount = $rowOil["ROUND(sto.oil_Total_Amount, 2)"];
+                                            $Oil_Name = $rowOil["Name"];
+                                            $Oil_Cost = $rowOil["Oil_Cost"];
+                                            $Oil_price = $rowOil["Oil_Price"];
+                                            $Total_amount = $rowOil["Total_Amount"];
                                             $Supplier_name = $rowOil["Supplier_name"];
-                                            $Station_name = $rowOil["Station_name"];
+                                            $Station_Name = $rowOil["Station_Name"];
                                             echo "<tr>";
-                                            echo "<td>$oil_Name</td>";
-                                            echo "<td>$oil_Total_Amount</td>";
-                                            echo "<td>$Oil_cost</td>";
-                                            echo "<td>$oil_sale_price</td>";
-                                            echo "<td>$Station_name</td>";
+                                            echo "<td>$Oil_Name</td>";
+                                            echo "<td>$Total_amount</td>";
+                                            echo "<td>$Oil_Cost</td>";
+                                            echo "<td>$Oil_price</td>";
+                                            echo "<td>$Station_Name</td>";
                                             echo "<td>$Supplier_name</td>";
-                                            //echo "<td><a href ='licenseUpdate.php?id=$license_file_no'>$license_file_no</td>";
                                             echo "</tr>";
                                         }
-                                    ?>    
+                                        $resultOil->close();
+                                        $db->next_result();
+                                    ?>   
                                 </tbody>
                             </table>
                         </div>
-                        <!-- /.panel-body -->
+                       
                     </div>
                 </div>
                 <div class="row">
@@ -296,25 +289,29 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php 
-                                        while ($rowProduct = mysqli_fetch_array($resultProduct)) {
-                                            $Product_name = $rowProduct["Product_name"];
-                                            $Cost = $rowProduct["AVG(p.Cost)"];
-                                            $Product_Sale_Price = $rowProduct["Product_Sale_Price"];
-                                            $Product_total_amount = $rowProduct["ROUND(SUM(g.Product_total_amount))"];
-                                            $Supplier_name_Product = $rowProduct["Supplier_name"];
-                                            $Station_name = $rowProduct["Station_name"];
+                                <?php 
+                                    $sqlService = "CALL Service();";
+                                    $resultService = mysqli_query($db,$sqlService);
+
+                                        while ($rowService = mysqli_fetch_array($resultService)) {
+                                            $Product_name = $rowService["Product_name"];
+                                            $Total_Amount = $rowService["Total_Amount"];
+                                            $Product_Cost = $rowService["Product_Cost"];
+                                            $Product_Price = $rowService["Product_Price"];
+                                            $Station_Name = $rowService["Station_Name"];
+                                            $Supplier_name = $rowService["Supplier_name"];
                                             echo "<tr>";
                                             echo "<td>$Product_name</td>";
-                                            echo "<td>$Product_total_amount</td>";
-                                            echo "<td>$Cost</td>";
-                                            echo "<td>$Product_Sale_Price</td>";
-                                            echo "<td>$Station_name</td>";
-                                            echo "<td>$Supplier_name_Product</td>";
-                                            //echo "<td><a href ='licenseUpdate.php?id=$license_file_no'>$license_file_no</td>";
+                                            echo "<td>$Total_Amount</td>";
+                                            echo "<td>$Product_Cost</td>";
+                                            echo "<td>$Product_Price</td>";
+                                            echo "<td>$Station_Name</td>";
+                                            echo "<td>$Supplier_name</td>";
                                             echo "</tr>";
                                         }
-                                    ?>    
+                                        $resultService->close();
+                                        $db->next_result();
+                                    ?>       
                                 </tbody>
                             </table>
                         </div>
