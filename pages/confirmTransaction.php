@@ -13,23 +13,37 @@
         $oil_IDNstation_ID = $_POST['oil_IDNstation_ID'];
         $oil_ID= explode(',',$oil_IDNstation_ID)[0];
         $station_ID= explode(',',$oil_IDNstation_ID)[1];
-        $Customer_ID = $_POST['Customer_ID'];
+        $phone_number = $_POST['phone_number'];
 
-        $sqlInsertBuy = "INSERT INTO Buy (Buy_ID, Buy_amount, Oil_ID, Customer_ID, Value, Date, Tax_id_number) 
-                              VALUES (NULL, '$Buy_amount', '$oil_ID', '$Customer_ID', '$value ', '$Date', '$Tax_id_number')";
-        $resultInsertBuy = mysqli_query($db,$sqlInsertBuy);
+        $sqlCheckCustomerIsExist = "SELECT Customer_ID FROM Customer WHERE Phone_number='$phone_number'";
+        $resultCheckCustomerIsExist = mysqli_query($db,$sqlCheckCustomerIsExist);
+        if(mysqli_num_rows($resultCheckCustomerIsExist)>0){
 
-        if($resultInsertBuy){
-            echo '<h2><b>資料送出成功!</b></h2>';
-            echo "<meta http-equiv=REFRESH CONTENT=2;url=deal.php>";
+            $rowCustomerID = mysqli_fetch_array($resultCheckCustomerIsExist);
+            $Customer_ID = $rowCustomerID["Customer_ID"];
+            $sqlInsertBuy = "INSERT INTO Buy (Buy_ID, Buy_amount, Oil_ID, Customer_ID, Value, Date, Tax_id_number) 
+                                  VALUES (NULL, '$Buy_amount', '$oil_ID', '$Customer_ID', '$value ', '$Date', '$Tax_id_number')";
+            $resultInsertBuy = mysqli_query($db,$sqlInsertBuy);
+
+            if($resultInsertBuy){
+                echo '<h2><b>資料送出成功!</b></h2>';
+                echo "<meta http-equiv=REFRESH CONTENT=2;url=deal.php>";
+            }else{
+                $err = mysqli_error($db);
+                mysqli_rollback($db);
+                echo '<h2 style="color:red;"><b>資料送出失敗!<br/></b></h2>';
+                echo '<p>'. $err .'</p>';
+                echo "<meta http-equiv=REFRESH CONTENT=2;url=deal.php>";
+                error_log($err,3);
+            }
+
         }else{
-            $err = mysqli_error($db);
-            mysqli_rollback($db);
-            echo '<h2 style="color:red;"><b>資料送出失敗!<br/></b></h2>';
-            echo '<p>'. $err .'</p>';
-            echo "<meta http-equiv=REFRESH CONTENT=2;url=deal.php>";
-            error_log($err,3);
-        };   
+
+            echo '<script language="javascript">';
+            echo 'alert("查無此消費者，請先進行新增！")';
+            echo '</script>';
+            echo "<meta http-equiv=REFRESH CONTENT=2;url=member.php>";
+        }
     }
 
     if(isset($_GET['Product'])){ 
@@ -41,24 +55,35 @@
         $product_IDNstation_ID = $_POST['product_IDNstation_ID'];
         $product_ID= explode(',',$product_IDNstation_ID)[0];
         $station_ID= explode(',',$product_IDNstation_ID)[1];
-        $Customer_ID = $_POST['Customer_ID2'];
-        
-        $sqlInsertRequired = "INSERT INTO Required (Transaction_ID, Transaction_amount, Product_ID, Customer_ID, Date, Value, Tax_id_number) 
-                                    VALUES (NULL, '$tra_Product_amount', '$product_ID', $Customer_ID, '$tra_Date', '$tra_value ', '$tra_Tax_id_number')";
-        $resultInsertRequired = mysqli_query($db,$sqlInsertRequired);
-       
+        $phone_number = $_POST['phone_number2'];
 
-        if($resultInsertRequired){
-            echo '<h2><b>資料送出成功!</b></h2>';
-            echo "<meta http-equiv=REFRESH CONTENT=2;url=deal.php>";
+        $sqlCheckCustomerIsExist = "SELECT Customer_ID FROM Customer WHERE Phone_number='$phone_number'";
+        $resultCheckCustomerIsExist = mysqli_query($db,$sqlCheckCustomerIsExist);
+
+        if(mysqli_num_rows($resultCheckCustomerIsExist)>0){
+
+            $sqlInsertRequired = "INSERT INTO Required (Transaction_ID, Transaction_amount, Product_ID, Customer_ID, Date, Value, Tax_id_number) 
+                                       VALUES (NULL, '$tra_Product_amount', '$product_ID', $Customer_ID, '$tra_Date', '$tra_value ', '$tra_Tax_id_number')";
+            $resultInsertRequired = mysqli_query($db,$sqlInsertRequired);
+    
+            if($resultInsertRequired){
+                echo '<h2><b>資料送出成功!</b></h2>';
+                echo "<meta http-equiv=REFRESH CONTENT=2;url=deal.php>";
+            }else{
+                $err = mysqli_error($db);
+                mysqli_rollback($db);
+                echo '<h2 style="color:red;"><b>資料送出失敗!<br/></b></h2>';
+                echo '<p>'. $err .'</p>';
+                echo "<meta http-equiv=REFRESH CONTENT=2;url=deal.php>";
+                error_log($err,3);
+            };   
         }else{
-            $err = mysqli_error($db);
-            mysqli_rollback($db);
-            echo '<h2 style="color:red;"><b>資料送出失敗!<br/></b></h2>';
-            echo '<p>'. $err .'</p>';
-            echo "<meta http-equiv=REFRESH CONTENT=2;url=deal.php>";
-            error_log($err,3);
-        };   
+
+            echo '<script language="javascript">';
+            echo 'alert("查無此消費者，請先進行新增！")';
+            echo '</script>';
+            echo "<meta http-equiv=REFRESH CONTENT=2;url=member.php>";
+        }        
     }
 
     mysqli_close($db);

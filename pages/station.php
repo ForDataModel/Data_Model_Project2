@@ -5,8 +5,8 @@
         die("無法開啟$dbname資料庫");
     }
     $sqlStation = "SELECT s.Address, s.Name AS stationName, s.Phone_number, Staff.Name
-              FROM Station AS s, Staff
-             WHERE s.Manager_ID = Staff.Staff_ID";
+                     FROM Station AS s, Staff
+                    WHERE s.Manager_ID = Staff.Staff_ID";
     $sqlManager = "SELECT Staff.Staff_ID, Staff.NAME AS staffName
                     FROM Staff, Fulltime
                     WHERE staff.Staff_ID = Fulltime.Staff_ID";
@@ -134,7 +134,7 @@
                             echo "</div>";
                             echo "<hr>";
                             echo "<div class='text'>";
-                            echo "<p>$stationName</p>";
+                            echo "<a href='storage.php?stationName=$stationName'><p class = 'stationName'>$stationName</p></a>";
                             echo "<p>地址：$Address</p>";
                             echo "<p>電話：$Phone_number</p>";
                             echo "<p>負責人：$Staff_Name</p>";
@@ -165,7 +165,7 @@
             </div>
             <div class="col-xs-12">
             <p class="col-xs-5">電話</p>            
-            <input class="col-xs-7" type="text" placeholder="xx-xxxx-xxxx"  name="station_phone">
+            <input class="col-xs-7" type="text" placeholder="(xx)xxxx-xxxx"  name="station_phone">
             </div>
             <div class="col-xs-12">
             <p class="col-xs-5">負責人</p>            

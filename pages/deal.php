@@ -28,18 +28,6 @@
                      WHERE r.Product_ID = p.Product_ID";
     $resultRequired = mysqli_query($db,$sqlRequired);
 
-    $sqlMember = "SELECT c.Customer_ID, m.Member_name FROM Customer AS c, Member AS m WHERE c.Customer_ID = m.Customer_ID";
-    $resultMember = mysqli_query($db, $sqlMember);
-
-    $sqlNormal = "SELECT c.Customer_ID, n.Serial_number FROM Customer AS c, Normal AS n WHERE c.Customer_ID = n.Customer_ID";
-    $resultNormal = mysqli_query($db, $sqlNormal);
-
-    $sqlMember2 = "SELECT c.Customer_ID, m.Member_name FROM Customer AS c, Member AS m WHERE c.Customer_ID = m.Customer_ID";
-    $resultMember2 = mysqli_query($db, $sqlMember2);
-
-    $sqlNormal2 = "SELECT c.Customer_ID, n.Serial_number FROM Customer AS c, Normal AS n WHERE c.Customer_ID = n.Customer_ID";
-    $resultNormal2 = mysqli_query($db, $sqlNormal2);
-
     $err = mysqli_error($db);
     echo $err;
     mysqli_close($db);
@@ -201,26 +189,8 @@
 				                    </select>
                                 </div>
                                 <div class="col-xs-12 poptext">
-                                    <p class="col-xs-5">消費者</p>            
-                                    <select name="Customer_ID" class="col-xs-7">
-                                        <option value="0">請選擇</option>
-                                        <option value="1">----會員----</option>
-                                        <?php 
-	    			                        while ($rowMember = mysqli_fetch_array($resultMember)) {
-                                                   $Customer_ID = $rowMember["Customer_ID"];
-                                                   $Member_name = $rowMember["Member_name"];
-                                                   echo "<option value='$Customer_ID'>$Member_name</option>";
-				                            }
-				                        ?>
-                                        <option value="2">----非會員----</option>
-                                        <?php 
-	    			                        while ($rowNormal = mysqli_fetch_array($resultNormal)) {
-                                                   $Customer_ID = $rowNormal["Customer_ID"];
-                                                   $Serial_number = $rowNormal["Serial_number"];
-                                                   echo "<option value='$Customer_ID'>$Serial_number</option>";
-				                            }
-				                        ?>
-				                    </select>
+                                    <p class="col-xs-5">消費者聯絡電話</p>            
+                                    <input class="col-xs-7" type="text" name="phone_number">
                                 </div>
                                 <div id="newconfirm1">
                                     <input type="submit" value="確認新增" >
@@ -311,26 +281,8 @@
 				                    </select>
                                 </div>
                                 <div class="col-xs-12 poptext">
-                                    <p class="col-xs-5">消費者</p>            
-                                    <select name="Customer_ID2" class="col-xs-7">
-                                        <option value="0">請選擇</option>
-                                        <option value="1">----會員----</option>
-                                        <?php 
-	    			                        while ($rowMember2 = mysqli_fetch_array($resultMember2)) {
-                                                   $Customer_ID = $rowMember2["Customer_ID"];
-                                                   $Member_name = $rowMember2["Member_name"];
-                                                   echo "<option value='$Customer_ID'>$Member_name</option>";
-				                            }
-				                        ?>
-                                        <option value="2">----非會員----</option>
-                                        <?php 
-	    			                        while ($rowNormal2 = mysqli_fetch_array($resultNormal2)) {
-                                                   $Customer_ID = $rowNormal2["Customer_ID"];
-                                                   $Serial_number = $rowNormal2["Serial_number"];
-                                                   echo "<option value='$Customer_ID'>$Serial_number</option>";
-				                            }
-				                        ?>
-				                    </select>
+                                    <p class="col-xs-5">消費者聯絡電話</p>            
+                                    <input class="col-xs-7" type="text" name="phone_number2">
                                 </div>
                                 <div id="newconfirm2">
                                     <input type="submit" value="確認新增" >

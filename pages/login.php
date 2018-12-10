@@ -50,7 +50,7 @@
                         <h3 class="panel-title">Please Sign In</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form" action="login_php.php" method="post">
+                        <form action="login_php.php" method="post">
                             <fieldset>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="姓名" name="username" type="text" autofocus>
@@ -58,7 +58,7 @@
                                 <div class="form-group">
                                     <input class="form-control" placeholder="身份證字號" name="password" type="password">
                                 </div>
-                                <input class="btn btn-lg btn-success btn-block" value = "Login" type="button">
+                                <input class="btn btn-lg btn-success btn-block" value = "Login" type="submit">
                             </fieldset>
                         </form>
                     </div>

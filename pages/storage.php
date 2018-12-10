@@ -196,7 +196,8 @@
                                 </thead>
                                 <tbody>
                                     <?php 
-                                      $sqlOil = "CALL Storage();";
+                                      $GetStation = $_GET['stationName'];
+                                      $sqlOil = "CALL StorgeOfOil('$GetStation');";
                                       $resultOil = mysqli_query($db,$sqlOil);
 
                                         while ($rowOil = mysqli_fetch_array($resultOil)) {
@@ -290,7 +291,8 @@
                                 </thead>
                                 <tbody>
                                 <?php 
-                                    $sqlService = "CALL Service();";
+                                    $GetStation2 = $_GET['stationName'];
+                                    $sqlService = "CALL ProductHaving('$GetStation2');";
                                     $resultService = mysqli_query($db,$sqlService);
 
                                         while ($rowService = mysqli_fetch_array($resultService)) {

@@ -4,7 +4,6 @@
     if (!mysqli_select_db($db,$dbname)) {
         die("無法開啟$dbname資料庫");
     }
-    mysqli_begin_transaction($db, MYSQLI_TRANS_START_READ_WRITE);
 
     $username = $_POST['username'];
     $password = $_POST['password'];
