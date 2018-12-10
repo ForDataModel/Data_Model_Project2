@@ -1,22 +1,21 @@
 <?php
-    $db = mysqli_connect("localhost","root","root") or die("無法開啟MySQL伺服器連接!");
-    $dbname = "Gastation";
-    if (!mysqli_select_db($db,$dbname)) {
-        die("無法開啟$dbname資料庫");
+    $db = mysqli_connect("localhost","admin","admin", "gastation") or die("無法開啟MySQL伺服器連接!");
+    if (mysqli_connect_errno()) {
+        die("無法開啟$db資料庫");
     }
-    
+
     $sql = "SELECT Staff.Name, Staff.Gender, Staff.Personal_ID,Staff.Birthday,Fulltime.Salary,Station.Name,Staff.Staff_ID,Fulltime.Staff_ID
-            FROM Staff 
-            INNER JOIN Fulltime 
-            ON Staff.Staff_ID=Fulltime.Staff_ID 
-            LEFT JOIN Station 
+            FROM Staff
+            INNER JOIN Fulltime
+            ON Staff.Staff_ID=Fulltime.Staff_ID
+            LEFT JOIN Station
             ON Staff.Station_ID=Station.Station_ID";
     $result = mysqli_query($db,$sql);
     $sql2 ="SELECT Staff.Name, Staff.Gender, Staff.Personal_ID,Staff.Birthday,Parttime.Hourpay,Station.Name,Staff.Staff_ID
-            FROM Staff 
-            INNER JOIN Parttime 
+            FROM Staff
+            INNER JOIN Parttime
             ON Staff.Staff_ID=Parttime.Staff_ID
-            LEFT JOIN Station 
+            LEFT JOIN Station
             ON Staff.Station_ID=Station.Station_ID"
             ;
     $sql3="SELECT Name, Station_ID FROM Station";
@@ -30,16 +29,16 @@
     $resultarrayID=array();
     for($i=1;$i<=mysqli_num_rows($result4);$i++){
         $resultarrayName=mysqli_fetch_array($result4);
-        
+
         array_push($resultarraycall, "$resultarrayName[0]");
         array_push($resultarrayID, "$resultarrayName[1]");
     }
-    
+
 
     $err = mysqli_error($db);
-    
 
-    
+
+
     echo $err;
     mysqli_close($db);
 ?>
@@ -153,7 +152,7 @@
                     <div class="panel-body">
                         <h2>正職</h2>
 
-                     
+
                         <div class="add">
                             <button onclick="showDialog1()" class="btn btn-default">新增</button>
                         </div>
@@ -170,7 +169,7 @@
                                 </div>
                                 <div class="col-xs-12 poptext">
                                     <p class="col-xs-5">性別</p>
-                        
+
                         <input type="radio" class="col-xs-2" name="Gender" type="text" value="1">男</br>
                         <input type="radio" class="col-xs-2" name="Gender" type="text" value="0">女
                                 </div>
@@ -186,22 +185,22 @@
                                     <input class="col-xs-7" type="text" name="Salary">
                                 </div>
                                 <div class="col-xs-12">
-                                <p class="col-xs-5">加油站</p>   
-                        
+                                <p class="col-xs-5">加油站</p>
+
                                 <select name="station_id">
                                     <?php
                                         for($i=1;$i<=mysqli_num_rows($result3);$i++){
                                             $rs3=mysqli_fetch_row($result3);
                                         ?>
                                     <option value="<?php echo $rs3[1]?>"><?php echo $rs3[0]?></option>
-                             
+
 
                                     <?php
                                 }
                                 ?>
-                            
+
                     </select>
-                    
+
                     </div>
                                 <div id="newconfirm1">
                                     <input type="submit" value="確認新增" name="save" onclick="closeDialog();" >
@@ -228,11 +227,11 @@
                                         $rs=mysqli_fetch_row($result);
                                 ?>
                                 <tbody>
-                                    
+
                                     <tr class="odd gradeA">
-                                        
+
                                         <td><?php echo $rs[0]?></td>
-                                        <td><?php 
+                                        <td><?php
                                         if ($rs[1]==1){
                                             echo "男";
                                         }else
@@ -242,12 +241,12 @@
                                         <td hidden><?php echo $rs[6]?></td>
                                         <td><?php echo $rs[4]?></td>
                                         <td><?php echo $rs[5]?></td>
-                                        
+
                                         <td class="center"><a class="edit">修改 </a></td>
-                                        
+
                                         <td class="center"><a href="indexaction.php?delete=1&Personal_ID=<?=$rs[2]?>">X</a></td>
-                                        
-                                        
+
+
                                     </tr>
                                 </tbody>
                                 <?php
@@ -279,7 +278,7 @@
                                 </div>
                                 <div class="col-xs-12 poptext">
                                     <p class="col-xs-5">性別</p>
-                        
+
                         <input type="radio" class="col-xs-2" name="Gender2" type="text" value="1">男</br>
                         <input type="radio" class="col-xs-2" name="Gender2" type="text" value="0">女
                                 </div>
@@ -295,22 +294,22 @@
                                     <input class="col-xs-7" type="text" name="Salary2">
                                 </div>
                                 <div class="col-xs-12">
-                                <p class="col-xs-5">加油站</p>   
-                        
+                                <p class="col-xs-5">加油站</p>
+
                                 <select name="station_id2">
                                     <?php
                                         for($i=1;$i<=mysqli_num_rows($result5);$i++){
                                             $rs5=mysqli_fetch_row($result5);
                                         ?>
                                     <option value="<?php echo $rs5[1]?>"><?php echo $rs5[0]?></option>
-                             
+
 
                                     <?php
                                 }
                                 ?>
-                            
+
                     </select>
-                    
+
                     </div>
                                 <div id="newconfirm1">
                                     <input type="submit" value="確認新增" name="save2" onclick="closeDialog2();" >
@@ -338,10 +337,10 @@
                                         $rs2=mysqli_fetch_row($result2);
                                 ?>
                                 <tbody>
-                                    
+
                                     <tr class="odd gradeA">
                                         <td><?php echo $rs2[0]?></td>
-                                        <td><?php 
+                                        <td><?php
                                         if ($rs2[1]=="1"){
                                             echo "男";
                                         }else
@@ -403,7 +402,7 @@ for(i=0; i<num; i++){
 }
 content += "</select>";
 
-var options = "<select name='station_id'> <?php for($i=1;$i<" +num + ";$i++) { 
+var options = "<select name='station_id'> <?php for($i=1;$i<" +num + ";$i++) {
     $rs3=mysqli_fetch_row($result3);?><option value='<?php echo $rs3[1]?>' name='Station_id'><?php echo $rs3[0]?></option> <?php } ?></select>";
 
 //var station = $("#station").val();
@@ -423,7 +422,7 @@ $(".edit").on("click",function(){
   $(this).parent().prev().text("");
   $(this).parent().prev().html(content);
   $(this).parent().html("<button type='submit' class='conform' name='edit'>確認</button>");
-  
+
   $(".conform").on("click",function(){
     location.reload();
   })
@@ -440,7 +439,7 @@ $(".edit2").on("click",function(){
   $(this).parent().prev().text("");
   $(this).parent().prev().html(content);
   $(this).parent().html("<button type='submit' class='conform' name='edit2'>確認</button>");
-  
+
   $(".conform").on("click",function(){
     location.reload();
   })
@@ -458,12 +457,12 @@ function showDialog1(){
    /*秀出對話框*/
 $("#dialog1").css("display","");
 $("#msg1").css("display","");
-        
+
 var w=$("#msg1").width();
 var h=$("#msg1").height();
 var _top=_sh/2-h/2+$(document).scrollTop();//更好的方法 使用jQuery解決
 var _left=_sw/2-w/2;
-   /*設定視窗出現位置*/  
+   /*設定視窗出現位置*/
 $("#msg1").css("top",_top+'px');
 $("#msg1").css("left",_left+'px');
 }
@@ -480,12 +479,12 @@ function showDialog2(){
    /*秀出對話框*/
 $("#dialog2").css("display","");
 $("#msg2").css("display","");
-        
+
 var w=$("#msg2").width();
 var h=$("#msg2").height();
 var _top=_sh/2-h/2+$(document).scrollTop();//更好的方法 使用jQuery解決
 var _left=_sw/2-w/2;
-   /*設定視窗出現位置*/  
+   /*設定視窗出現位置*/
 $("#msg2").css("top",_top+'px');
 $("#msg2").css("left",_left+'px');
 }
