@@ -4,8 +4,6 @@
         die("無法開啟$db資料庫");
     }
 
-    mysqli_begin_transaction($db, MYSQLI_TRANS_START_READ_WRITE);
-
     $station_name = $_POST['station_name'];
     $station_address = $_POST['station_address'];
     $station_phone = $_POST['station_phone'];
@@ -14,6 +12,8 @@
     $sqlCheckStaffIsUnique = "SELECT Name FROM Station WHERE Station.Manager_ID = '$ManagerID'";
     $resultCheckStaffIsUnique = mysqli_query($db,$sqlCheckStaffIsUnique);
     if(mysqli_num_rows($resultCheckStaffIsUnique)==0){
+
+        mysqli_begin_transaction($db, MYSQLI_TRANS_START_READ_WRITE);
         
         $sqlInsertStation = "INSERT INTO Station (Station_ID, Address, Name, Manager_ID, Phone_number, Oil_Supplier_ID, Product_Supplier_ID)
                                   VALUES (NULL, '$station_address', '$station_name', '$ManagerID', '$station_phone', 1, 2)";

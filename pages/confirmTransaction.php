@@ -1,8 +1,7 @@
 <?php
-    $db = mysqli_connect("localhost","root","root") or die("無法開啟MySQL伺服器連接!");
-    $dbname = "Gastation";
-    if (!mysqli_select_db($db,$dbname)) {
-        die("無法開啟$dbname資料庫");
+    $db = mysqli_connect("localhost","root","root","Gastation") or die("無法開啟MySQL伺服器連接!");
+    if (mysqli_connect_errno()) {
+        die("無法開啟$db資料庫");
     }
     if(isset($_GET['Oil'])){
 
@@ -17,6 +16,7 @@
 
         $sqlCheckCustomerIsExist = "SELECT Customer_ID FROM Customer WHERE Phone_number='$phone_number'";
         $resultCheckCustomerIsExist = mysqli_query($db,$sqlCheckCustomerIsExist);
+
         if(mysqli_num_rows($resultCheckCustomerIsExist)>0){
 
             $rowCustomerID = mysqli_fetch_array($resultCheckCustomerIsExist);
@@ -39,11 +39,39 @@
 
         }else{
 
-            echo '<script language="javascript">';
-            echo 'alert("查無此消費者，請先進行新增！")';
-            echo '</script>';
-            echo "<meta http-equiv=REFRESH CONTENT=2;url=member.php>";
-        }
+            function randomNumber(){
+                for ($randomNumber = mt_rand(1, 9), $i = 1; $i < 9; $i++) {
+                    $randomNumber .= mt_rand(0, 9);
+                }
+                return $randomNumber;
+            } 
+            $Serial_number = randomNumber();
+            mysqli_begin_transaction($db, MYSQLI_TRANS_START_READ_WRITE);
+            $sqlInsertCustomer = "INSERT INTO Customer (Customer_ID, Phone_number) VALUES (NULL, '$phone_number')";
+            $resultInsertCustomer = mysqli_query($db,$sqlInsertCustomer);
+            $sqlSelectID = "SELECT Customer_ID FROM Customer WHERE Phone_number = '$phone_number'";
+            $resultSelectID= mysqli_query($db,$sqlSelectID);
+            $row = mysqli_fetch_array($resultSelectID);
+            $Customer_ID2 = $row["Customer_ID"];
+            $sqlInsertNormal = "INSERT INTO Normal(Customer_ID, Serial_number) VALUES ('$Customer_ID2', '$Serial_number')";
+            $resultInsertNormal = mysqli_query($db,$sqlInsertNormal);
+            $sqlInsertBuy = "INSERT INTO Buy (Buy_ID, Buy_amount, Oil_ID, Customer_ID, Value, Date, Tax_id_number) 
+                                  VALUES (NULL, '$Buy_amount', '$oil_ID', '$Customer_ID2 ', '$value ', '$Date', '$Tax_id_number')";
+            $resultInsertBuy = mysqli_query($db,$sqlInsertBuy);
+
+            if($resultInsertNormal && $resultInsertNormal){
+                mysqli_commit($db);
+                echo '<h2><b>資料送出成功!</b></h2>';
+                echo "<meta http-equiv=REFRESH CONTENT=2;url=deal.php>";
+            }else{
+                $err = mysqli_error($db);
+                mysqli_rollback($db);
+                echo '<h2 style="color:red;"><b>資料送出失敗!<br/></b></h2>';
+                echo '<p>'. $err .'</p>';
+                echo "<meta http-equiv=REFRESH CONTENT=2;url=deal.php>";
+                error_log($err,3);
+            }
+         }
     }
 
     if(isset($_GET['Product'])){ 
@@ -79,11 +107,39 @@
             };   
         }else{
 
-            echo '<script language="javascript">';
-            echo 'alert("查無此消費者，請先進行新增！")';
-            echo '</script>';
-            echo "<meta http-equiv=REFRESH CONTENT=2;url=member.php>";
-        }        
+            function randomNumber(){
+                for ($randomNumber = mt_rand(1, 9), $i = 1; $i < 9; $i++) {
+                    $randomNumber .= mt_rand(0, 9);
+                }
+                return $randomNumber;
+            } 
+            $Serial_number = randomNumber();
+            mysqli_begin_transaction($db, MYSQLI_TRANS_START_READ_WRITE);
+            $sqlInsertCustomer = "INSERT INTO Customer (Customer_ID, Phone_number) VALUES (NULL, '$phone_number')";
+            $resultInsertCustomer = mysqli_query($db,$sqlInsertCustomer);
+            $sqlSelectID = "SELECT Customer_ID FROM Customer WHERE Phone_number = '$phone_number'";
+            $resultSelectID= mysqli_query($db,$sqlSelectID);
+            $row = mysqli_fetch_array($resultSelectID);
+            $Customer_ID2 = $row["Customer_ID"];
+            $sqlInsertNormal = "INSERT INTO Normal(Customer_ID, Serial_number) VALUES ('$Customer_ID2', '$Serial_number')";
+            $resultInsertNormal = mysqli_query($db,$sqlInsertNormal);
+            $sqlInsertBuy = "INSERT INTO Buy (Buy_ID, Buy_amount, Oil_ID, Customer_ID, Value, Date, Tax_id_number) 
+                                  VALUES (NULL, '$Buy_amount', '$oil_ID', '$Customer_ID2 ', '$value ', '$Date', '$Tax_id_number')";
+            $resultInsertBuy = mysqli_query($db,$sqlInsertBuy);
+
+            if($resultInsertNormal && $resultInsertNormal){
+                mysqli_commit($db);
+                echo '<h2><b>資料送出成功!</b></h2>';
+                echo "<meta http-equiv=REFRESH CONTENT=2;url=deal.php>";
+            }else{
+                $err = mysqli_error($db);
+                mysqli_rollback($db);
+                echo '<h2 style="color:red;"><b>資料送出失敗!<br/></b></h2>';
+                echo '<p>'. $err .'</p>';
+                echo "<meta http-equiv=REFRESH CONTENT=2;url=deal.php>";
+                error_log($err,3);
+            }
+         }       
     }
 
     mysqli_close($db);
