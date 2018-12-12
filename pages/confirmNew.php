@@ -11,7 +11,6 @@
     $sqlCheckStaffIsUnique = "SELECT Name FROM Station WHERE Station.Manager_ID = '$ManagerID'";
     $resultCheckStaffIsUnique = mysqli_query($db,$sqlCheckStaffIsUnique);
     if(mysqli_num_rows($resultCheckStaffIsUnique)==0){
-
         mysqli_begin_transaction($db, MYSQLI_TRANS_START_READ_WRITE);
         $sqlInsertStation = "INSERT INTO Station (Station_ID, Address, Name, Manager_ID, Phone_number, Oil_Supplier_ID, Product_Supplier_ID)
                                   VALUES (NULL, '$station_address', '$station_name', '$ManagerID', '$station_phone', 1, 2)";
@@ -23,7 +22,6 @@
         $resultUpdateStaff = mysqli_query($db,$sqlUpdateStaff);
 
         if($resultInsertStation && $sqlUpdateStaff){
-            mysqli_commit($db);
             echo '<h2><b>資料送出成功!</b></h2>';
             echo "<meta http-equiv=REFRESH CONTENT=2;url=station.php>";
         }else{
@@ -32,7 +30,7 @@
             echo '<h2 style="color:red;"><b>資料送出失敗!<br/></b></h2>';
             echo '<p>'. $err .'</p>';
             echo "<meta http-equiv=REFRESH CONTENT=2;url=station.php>";
-            error_log($err, 3,"/Applications/MAMP/htdocs/Data_Model_Project2/error_log");        
+            error_log($err, 3,"/Applications/MAMP/htdocs/Data_Model_Project2/error_log");
         }
     }
     echo '<h2><b>管理者已經是其他加油站的負責人，請重新確認！</b></h2>';

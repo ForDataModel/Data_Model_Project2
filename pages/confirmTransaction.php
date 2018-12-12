@@ -99,7 +99,6 @@
         if($Now_Having-$tra_Product_amount>=0){
             $sqlCheckCustomerIsExist = "SELECT Customer_ID FROM Customer WHERE Phone_number='$phone_number'";
             $resultCheckCustomerIsExist = mysqli_query($db,$sqlCheckCustomerIsExist);
-
             if(mysqli_num_rows($resultCheckCustomerIsExist)>0){
 
             $sqlInsertRequired = "INSERT INTO Required (Transaction_ID, Transaction_amount, Product_ID, Customer_ID, Date, Value, Tax_id_number) 
