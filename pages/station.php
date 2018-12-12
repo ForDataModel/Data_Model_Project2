@@ -1,19 +1,25 @@
 <?php
-    $db = mysqli_connect("localhost","root","root") or die("無法開啟MySQL伺服器連接!");
-    $dbname = "Gastation";
-    if (!mysqli_select_db($db,$dbname)) {
-        die("無法開啟$dbname資料庫");
+    $db = mysqli_connect("localhost","root","root","Gastation") or die("無法開啟MySQL伺服器連接!");
+    if (mysqli_connect_errno()) {
+        die("無法開啟$db資料庫");
     }
+
     $sqlStation = "SELECT s.Address, s.Name AS stationName, s.Phone_number, Staff.Name
-              FROM Station AS s, Staff
-             WHERE s.Manager_ID = Staff.Staff_ID";
+                     FROM Station AS s, Staff
+                    WHERE s.Manager_ID = Staff.Staff_ID";
+    $resultStation = mysqli_query($db,$sqlStation);
+
     $sqlManager = "SELECT Staff.Staff_ID, Staff.NAME AS staffName
                     FROM Staff, Fulltime
                     WHERE staff.Staff_ID = Fulltime.Staff_ID";
-    $resultStation = mysqli_query($db,$sqlStation);
     $resultManager = mysqli_query($db,$sqlManager);
-    $err = mysqli_error($db);
-    echo $err;
+    
+    if(!$resultManager && !$resultStation){
+        $err = mysqli_error($db);
+        echo $err;
+        error_log($err, 3,"/Applications/MAMP/htdocs/Data_Model_Project2/error_log");
+    }
+
     mysqli_close($db);
 ?>
 <!DOCTYPE html>
@@ -134,7 +140,7 @@
                             echo "</div>";
                             echo "<hr>";
                             echo "<div class='text'>";
-                            echo "<p>$stationName</p>";
+                            echo "<a href='storage.php?stationName=$stationName'><p class = 'stationName'>$stationName</p></a>";
                             echo "<p>地址：$Address</p>";
                             echo "<p>電話：$Phone_number</p>";
                             echo "<p>負責人：$Staff_Name</p>";
@@ -165,7 +171,7 @@
             </div>
             <div class="col-xs-12">
             <p class="col-xs-5">電話</p>            
-            <input class="col-xs-7" type="text" placeholder="xx-xxxx-xxxx"  name="station_phone">
+            <input class="col-xs-7" type="text" placeholder="(xx)xxxx-xxxx"  name="station_phone">
             </div>
             <div class="col-xs-12">
             <p class="col-xs-5">負責人</p>            

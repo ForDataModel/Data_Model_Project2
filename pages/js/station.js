@@ -42,11 +42,12 @@ $(".add img").on("click",function(){
 	}
 	addHover();
 })
-
+/*
 $(".item").on("click",function(){
-	window.location.href="storage.php";
+	var stationName = $(".stationName").text();
+	window.location.href="storage.php?stationName="+stationName;
 })
-
+*/
 $(".delete").on("click",function(){
   $(this).parent().parent().remove();
 })

@@ -1,9 +1,8 @@
 <?php
     $db = mysqli_connect("localhost","root","root","Gastation") or die("無法開啟MySQL伺服器連接!");
     if (mysqli_connect_errno()) {
-        die("無法開啟$dbname資料庫");
+        die("無法開啟$db資料庫");
     }
-
     $sqlStation = "SELECT Station_ID, Name AS Station_Name FROM Station";
     $resultStation = mysqli_query($db,$sqlStation);
 
@@ -16,10 +15,9 @@
     $sqlProductName = "SELECT Product_name FROM Product GROUP BY Product_name";
     $resultProductName = mysqli_query($db,$sqlProductName);
 
-    mysqli_commit($db);
     $err = mysqli_error($db);
     echo $err;
-  //  mysqli_close($db);
+    error_log($err, 3,"/Applications/MAMP/htdocs/Data_Model_Project2/error_log");
 ?>
 
 <!DOCTYPE html>
@@ -35,19 +33,26 @@
 
     <title>永錡加油站系統</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+   <!-- Bootstrap Core CSS -->
+   <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
     <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
 
+    <!-- DataTables CSS -->
+    <link href="../vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="../vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
 
-    <link href="css/storage.css" rel="stylesheet">
+    <link href="css/storage.css" rel="stylesheet">  
 
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
     <script src="js/storage.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -165,6 +170,10 @@
                                         <input class="col-xs-7" type="text" name="Oil_amount">
                                     </div>
                                     <div class="col-xs-12 poptext">
+                                        <p class="col-xs-5" >販賣價格</p>
+                                        <input class="col-xs-7" type="text" name="Oil_price">
+                                    </div>
+                                    <div class="col-xs-12 poptext">
                                         <p class="col-xs-5">加油站名</p>
                                         <select name="station_ID" class="col-xs-7">
                                         <option value="0">請選擇</option>
@@ -196,7 +205,8 @@
                                 </thead>
                                 <tbody>
                                     <?php 
-                                      $sqlOil = "CALL Storage();";
+                                      $GetStation = $_GET['stationName'];
+                                      $sqlOil = "CALL StorgeOfOil('$GetStation');";
                                       $resultOil = mysqli_query($db,$sqlOil);
 
                                         while ($rowOil = mysqli_fetch_array($resultOil)) {
@@ -259,6 +269,10 @@
                                         <input class="col-xs-7" type="text" name="Product_amount">
                                     </div>
                                     <div class="col-xs-12 poptext">
+                                        <p class="col-xs-5" >販賣價格</p>
+                                        <input class="col-xs-7" type="text" name="Product_price">
+                                    </div>
+                                    <div class="col-xs-12 poptext">
                                         <p class="col-xs-5">加油站名</p>
                                         <select name="station_ID2" class="col-xs-7">
                                         <option value="0">請選擇</option>
@@ -290,7 +304,8 @@
                                 </thead>
                                 <tbody>
                                 <?php 
-                                    $sqlService = "CALL Service();";
+                                    $GetStation2 = $_GET['stationName'];
+                                    $sqlService = "CALL ProductHaving('$GetStation2');";
                                     $resultService = mysqli_query($db,$sqlService);
 
                                         while ($rowService = mysqli_fetch_array($resultService)) {

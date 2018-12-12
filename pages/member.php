@@ -145,7 +145,7 @@
                     </div>
             <div class="search-container">
                             <div class="col-xs-8">
-                            <button onclick="showDialog1()" class="add btn btn-default">新增</button>
+                            <button onclick="showDialog()" class="add btn btn-default">新增</button>
                             </div>
                             
                         <form class="col-xs-4" action="member.php" method="post">
@@ -170,12 +170,12 @@
                     </div>
                     <br>
                         <p class="col-xs-5">姓名</p>            
-                        <input class="col-xs-7" type="text" name="Name">
+                        <input class="col-xs-7" type="text" name="Name" required>
                     </div>
                     <div class="col-xs-12 poptext">
                         <p class="col-xs-5">性別</p>            
-                        <input type="radio" class="col-xs-2" name="Gender" type="text" value="1">男</br>
-                        <input type="radio" class="col-xs-2" name="Gender" type="text" value="0">女
+                        <input type="radio" class="col-xs-2" name="Gender" type="text" value="1" required>男</br>
+                        <input type="radio" class="col-xs-2" name="Gender" type="text" value="0" required>女
                     </div>
                     <div class="col-xs-12 poptext">
                         <p class="col-xs-5">生日</p>            
@@ -183,12 +183,12 @@
                     </div>
                     <div class="col-xs-12 poptext">
                         <p class="col-xs-5">卡別</p>            
-                        <input type="radio" class="col-xs-2" name="Card_name" type="text" value="1">車隊卡</br>
-                        <input type="radio" class="col-xs-2" name="Card_name" type="text" value="0">捷利卡
+                        <input type="radio" class="col-xs-2" name="Card_name" type="text" value="1" required>車隊卡</br>
+                        <input type="radio" class="col-xs-2" name="Card_name" type="text" value="0" required>捷利卡
                     </div>
                     <div class="col-xs-12 poptext">
                         <p class="col-xs-5">電話</p>            
-                        <input class="col-xs-7" type="text" name="Phone_number">
+                        <input class="col-xs-7" type="text" name="Phone_number" required>
                     </div>
                     <div class="col-xs-12 poptext">
                         <p class="col-xs-5">住家地址</p>            
