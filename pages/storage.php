@@ -72,7 +72,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Data Base Admin</a>
+                <a class="navbar-brand" href="index2.php">Data Base Admin</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -100,19 +100,19 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="index.html">員工</a>
+                            <a href="index2.php">員工</a>
                         </li>
                         <li>
-                            <a href="station.html">加油站</a>
+                            <a href="station.php">加油站</a>
                         </li>
                         <li>
-                            <a href="supplier.html">供應商</a>
+                            <a href="supplier.php">供應商</a>
                         </li>
                         <li>
-                            <a href="deal.html">交易</a>
+                            <a href="deal.php">交易</a>
                         </li>
                         <li>
-                            <a href="member.html">會員</a>
+                            <a href="member.php">會員</a>
                         </li>
                     </ul>
                 </div>
@@ -320,7 +320,7 @@
                 </div>
                 <div class="row">
                 	<div class="back">
-                		<a href="station.html">
+                		<a href="station.php">
                 			<button class="btn btn-default">上一頁</button>
                 		</a>
                 	</div>
