@@ -23,9 +23,8 @@ body{
   z-index: 1;
   text-align: center;
 }
-#msg1{  
-  position:absolute;/*
-  top:100px;*/
+#msg1{
+  position:absolute;
   background-color:#F7F8FA;
   width:400px;
   z-index:3;
@@ -64,7 +63,7 @@ body{
   background: #F7F7F7;
 }
 #newconfirm1>input:active {
-    box-shadow: inset 1px 1px 1px #DFDFDF;   
+    box-shadow: inset 1px 1px 1px #DFDFDF;
 }
 #msgclose1{
   position: absolute;
@@ -87,9 +86,8 @@ body{
   z-index: 1;
   text-align: center;
 }
-#msg2{  
-  position:absolute;/*
-  top:100px;*/
+#msg2{
+  position:absolute;
   background-color:#F7F8FA;
   width:400px;
   z-index:3;
@@ -128,7 +126,7 @@ body{
   background: #F7F7F7;
 }
 #newconfirm2>input:active {
-    box-shadow: inset 1px 1px 1px #DFDFDF;   
+    box-shadow: inset 1px 1px 1px #DFDFDF;
 }
 #msgclose2{
   position: absolute;

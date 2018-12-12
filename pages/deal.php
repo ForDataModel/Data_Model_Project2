@@ -28,18 +28,6 @@
                      WHERE r.Product_ID = p.Product_ID";
     $resultRequired = mysqli_query($db,$sqlRequired);
 
-    $sqlMember = "SELECT c.Customer_ID, m.Member_name FROM Customer AS c, Member AS m WHERE c.Customer_ID = m.Customer_ID";
-    $resultMember = mysqli_query($db, $sqlMember);
-
-    $sqlNormal = "SELECT c.Customer_ID, n.Serial_number FROM Customer AS c, Normal AS n WHERE c.Customer_ID = n.Customer_ID";
-    $resultNormal = mysqli_query($db, $sqlNormal);
-
-    $sqlMember2 = "SELECT c.Customer_ID, m.Member_name FROM Customer AS c, Member AS m WHERE c.Customer_ID = m.Customer_ID";
-    $resultMember2 = mysqli_query($db, $sqlMember2);
-
-    $sqlNormal2 = "SELECT c.Customer_ID, n.Serial_number FROM Customer AS c, Normal AS n WHERE c.Customer_ID = n.Customer_ID";
-    $resultNormal2 = mysqli_query($db, $sqlNormal2);
-
     $err = mysqli_error($db);
     echo $err;
     mysqli_close($db);
@@ -127,19 +115,19 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="index.html">員工</a>
+                            <a href="index2.php">員工</a>
                         </li>
                         <li>
-                            <a href="station.html">加油站</a>
+                            <a href="station.php">加油站</a>
                         </li>
                         <li>
-                            <a href="supplier.html">供應商</a>
+                            <a href="supplier.php">供應商</a>
                         </li>
                         <li>
-                            <a href="deal.html">交易</a>
+                            <a href="deal.php">交易</a>
                         </li>
                         <li>
-                            <a href="member.html">會員</a>
+                            <a href="member.php">會員</a>
                         </li>
                     </ul>
                 </div>
@@ -187,7 +175,7 @@
                                 </div>
                                 <div class="col-xs-12 poptext">
                                     <p class="col-xs-5">交易商品</p>            
-                                    <select name="oil_IDNstation_ID" class="col-xs-7">
+                                    <select name="oil_IDNstation_IDNoil_Name" class="col-xs-7">
                                         <option value="0">請選擇</option>
                                         <?php 
 	    			                        while ($rowOilStorage = mysqli_fetch_array($resultOilStorage)) {
@@ -195,32 +183,14 @@
                                                    $Oil_Name = $rowOilStorage["Oil_Name"];
 	    				                           $Station_ID = $rowOilStorage["Station_ID"];
                                                    $Station_Name = $rowOilStorage["Station_Name"];
-                                                   echo "<option value='$Oil_ID,$Station_ID'>$Oil_Name, $Station_Name</option>";
+                                                   echo "<option value='$Oil_ID,$Station_ID,$Oil_Name'>$Oil_Name, $Station_Name</option>";
 				                            }
 				                        ?>
 				                    </select>
                                 </div>
                                 <div class="col-xs-12 poptext">
-                                    <p class="col-xs-5">消費者</p>            
-                                    <select name="Customer_ID" class="col-xs-7">
-                                        <option value="0">請選擇</option>
-                                        <option value="1">----會員----</option>
-                                        <?php 
-	    			                        while ($rowMember = mysqli_fetch_array($resultMember)) {
-                                                   $Customer_ID = $rowMember["Customer_ID"];
-                                                   $Member_name = $rowMember["Member_name"];
-                                                   echo "<option value='$Customer_ID'>$Member_name</option>";
-				                            }
-				                        ?>
-                                        <option value="2">----非會員----</option>
-                                        <?php 
-	    			                        while ($rowNormal = mysqli_fetch_array($resultNormal)) {
-                                                   $Customer_ID = $rowNormal["Customer_ID"];
-                                                   $Serial_number = $rowNormal["Serial_number"];
-                                                   echo "<option value='$Customer_ID'>$Serial_number</option>";
-				                            }
-				                        ?>
-				                    </select>
+                                    <p class="col-xs-5">消費者聯絡電話</p>            
+                                    <input class="col-xs-7" type="text" name="phone_number">
                                 </div>
                                 <div id="newconfirm1">
                                     <input type="submit" value="確認新增" >
@@ -297,7 +267,7 @@
                                 </div>
                                 <div class="col-xs-12 poptext">
                                     <p class="col-xs-5">交易商品</p>            
-                                    <select name="product_IDNstation_ID" class="col-xs-7">
+                                    <select name="product_IDNstation_IDNproduct_name" class="col-xs-7">
                                         <option value="0">請選擇</option>
                                         <?php 
 	    			                        while ($rowGoods = mysqli_fetch_array($resultGoodsTotal)) {
@@ -305,32 +275,14 @@
                                                    $Product_name = $rowGoods["Product_name"];
 	    				                           $Station_ID = $rowGoods["Station_ID"];
                                                    $Station_Name = $rowGoods["Station_Name"];
-                                                   echo "<option value='$Product_ID,$Station_ID'>$Product_name, $Station_Name</option>";
+                                                   echo "<option value='$Product_ID,$Station_ID,$Product_name'>$Product_name, $Station_Name</option>";
 				                            }
 				                        ?>
 				                    </select>
                                 </div>
                                 <div class="col-xs-12 poptext">
-                                    <p class="col-xs-5">消費者</p>            
-                                    <select name="Customer_ID2" class="col-xs-7">
-                                        <option value="0">請選擇</option>
-                                        <option value="1">----會員----</option>
-                                        <?php 
-	    			                        while ($rowMember2 = mysqli_fetch_array($resultMember2)) {
-                                                   $Customer_ID = $rowMember2["Customer_ID"];
-                                                   $Member_name = $rowMember2["Member_name"];
-                                                   echo "<option value='$Customer_ID'>$Member_name</option>";
-				                            }
-				                        ?>
-                                        <option value="2">----非會員----</option>
-                                        <?php 
-	    			                        while ($rowNormal2 = mysqli_fetch_array($resultNormal2)) {
-                                                   $Customer_ID = $rowNormal2["Customer_ID"];
-                                                   $Serial_number = $rowNormal2["Serial_number"];
-                                                   echo "<option value='$Customer_ID'>$Serial_number</option>";
-				                            }
-				                        ?>
-				                    </select>
+                                    <p class="col-xs-5">消費者聯絡電話</p>            
+                                    <input class="col-xs-7" type="text" name="phone_number2">
                                 </div>
                                 <div id="newconfirm2">
                                     <input type="submit" value="確認新增" >
