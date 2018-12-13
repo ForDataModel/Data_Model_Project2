@@ -27,7 +27,7 @@ var addHover = function(){
 $(function(){
 	addHover();
 });
-
+/*
 var items = 6;
 var addRow = "<div class='col-lg-12'></div>";
 var addMark = "<div class='col-lg-3 box'><div class='add'><img src='img/add.png' width='50%' height='100%'></div></div>";

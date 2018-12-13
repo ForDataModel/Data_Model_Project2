@@ -22,6 +22,7 @@
         $resultUpdateStaff = mysqli_query($db,$sqlUpdateStaff);
 
         if($resultInsertStation && $sqlUpdateStaff){
+            mysqli_commit($db);
             echo '<h2><b>資料送出成功!</b></h2>';
             echo "<meta http-equiv=REFRESH CONTENT=2;url=station.php>";
         }else{
@@ -32,8 +33,9 @@
             echo "<meta http-equiv=REFRESH CONTENT=2;url=station.php>";
             error_log($err, 3,"/Applications/MAMP/htdocs/Data_Model_Project2/error_log");
         }
+    }else{
+        echo '<h2><b>管理者已經是其他加油站的負責人，請重新確認！</b></h2>';
+        echo "<meta http-equiv=REFRESH CONTENT=2;url=station.php>";
     }
-    echo '<h2><b>管理者已經是其他加油站的負責人，請重新確認！</b></h2>';
-    echo "<meta http-equiv=REFRESH CONTENT=2;url=station.php>";
     mysqli_close($db);
 ?>

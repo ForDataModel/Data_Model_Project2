@@ -186,10 +186,10 @@
 				    ?>
 				</select>
             </div>
-            <div class="col-xs-12">
+          <!--  <div class="col-xs-12">
                 <input accept="image/*" id="uploadImage" type="file">
                 <img id="img" src="">
-            </div>
+            </div>-->
             <div id="newconfirm">
                 <input type="submit" value="確認新增" onclick="closeDialog();" ></div>
             </div>

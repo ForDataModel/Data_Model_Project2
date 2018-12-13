@@ -1,6 +1,10 @@
-$("#dialog1").css("display","none");
-$("#dialog1").css("opacity","0.5");
 
+
+$(function(){
+    $("#dialog1").css("display","none");
+    $("#dialog1").css("opacity","0.5");
+    $("#msg1").css("display","none");
+})
 
 function closeDialog1(){
 $("#dialog1").css("display","none");
@@ -20,10 +24,12 @@ $("#msg1").css("top",_top+'px');
 $("#msg1").css("left",_left+'px');
 }
 
+$(function(){
+    $("#dialog2").css("display","none");
+    $("#msg2").css("display","none");
+    $("#dialog2").css("opacity","0.5");
+})
 
-$("#dialog2").css("display","none");
-$("#msg2").css("display","none");
-$("#dialog2").css("opacity","0.5");
 
 function closeDialog2(){
 $("#dialog2").css("display","none");

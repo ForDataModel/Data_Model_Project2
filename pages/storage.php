@@ -145,7 +145,7 @@
                             <div class="row">
                                 <div id="dialog1"></div>
                                 <form action="updateCommodity.php?Oil=1" method="post">
-                                <div id="msg1" class="col-xs-4 col-xs-offset-2">
+                                <div id="msg1" class="col-xs-4 col-xs-offset-2" style="display:none">
                                     <div>
                                         <i id="msgclose1" class="fa fa-times col-xs-1 col-xs-offset-10" aria-hidden="true" onclick="closeDialog1();"></i>
                                     </div>
@@ -244,7 +244,7 @@
                             <div class="row">
                                 <div id="dialog2"></div>
                                 <form action="updateCommodity.php?Product=1" method="post">
-                                <div id="msg2" class="col-xs-4 col-xs-offset-2">
+                                <div id="msg2" class="col-xs-4 col-xs-offset-2" style="display:none">
                                     <div>
                                         <i id="msgclose2" class="fa fa-times col-xs-1 col-xs-offset-10" aria-hidden="true" onclick="closeDialog2();"></i>
                                     </div>

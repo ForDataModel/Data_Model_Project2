@@ -75,9 +75,10 @@
                     error_log($err, 3,"/Applications/MAMP/htdocs/Data_Model_Project2/error_log");
                 }
             }
+        }else{
+            echo '<h2 style="color:red;"><b>購買數量大於現有存量<br/></b></h2>';
+            echo "<meta http-equiv=REFRESH CONTENT=2;url=deal.php>";
         }
-        echo '<h2 style="color:red;"><b>購買數量大於現有存量<br/></b></h2>';
-        echo "<meta http-equiv=REFRESH CONTENT=2;url=deal.php>";
     }
 
     if(isset($_GET['Product'])){ 
@@ -151,9 +152,10 @@
                     error_log($err, 3,"/Applications/MAMP/htdocs/Data_Model_Project2/error_log");
                 }
             }
+        }else{
+            echo '<h2 style="color:red;"><b>購買數量大於現有存量<br/></b></h2>';
+            echo "<meta http-equiv=REFRESH CONTENT=2;url=deal.php>";       
         }
-        echo '<h2 style="color:red;"><b>購買數量大於現有存量<br/></b></h2>';
-        echo "<meta http-equiv=REFRESH CONTENT=2;url=deal.php>";       
     }
     mysqli_close($db);
 ?>
